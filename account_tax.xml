@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+  <data noupdate="0">
+
+      <!-- TBRI
+      eksempel
+
+        <record model="account.tax.template" id="tax_eu_sale_skr03">
+        <field name="chart_template_id" ref="l10n_de_chart_template"/>
+            <field name="name">Steuerfreie innergem. Lieferung (§4 Abs. 1b UStG) </field>
+            <field name="description">steuerfreie innergem. Lieferung</field>
+            <field name="type">percent</field>
+            <field name="amount">0</field>
+            <field name="account_paid_id" ref="account_1770"/>
+            <field name="base_code_id" ref="tax_code_41_skr03"/>
+            <field name="base_sign">1</field>
+            <field name="tax_sign">1</field>
+            <field name="account_collected_id" ref="account_1770"/>
+            <field name="ref_base_code_id" ref="tax_code_41_skr03"/>
+            <field name="ref_base_sign">-1</field>
+            <field name="ref_tax_sign">-1</field>
+            <field name="type_tax_use">sale</field>
+        </record>
+
+        -->
+    <record id="tax1" model="account.tax.template">
+        <field name="name">Utgående 25% mva(25.0%)</field>
+        <field name="description">Utgående 25% MVA</field>
+        <field name="type">percent</field>
+        <field name="amount">0.250000</field>
+        <field name="account_paid_id" ref="2700" />
+        <field name="base_code_id" ref="vat_code_base_due" />
+        <field name="base_sign">1</field>
+        <field name="tax_sign">1</field>
+        <field name="account_collected_id" ref="2700" />
+        <field name="ref_base_code_id" ref="vat_code_receivable_net" />
+        <field name="ref_base_sign">-1</field>
+      <field name="chart_template_id" ref="l10n_no_chart_template" />
+        <field name="type_tax_use">sale</field>
+      <field name="tax_code_id" ref="vat_code_due_tva" />
+      <field name="ref_tax_code_id" ref="vat_code_receivable" />
+    </record>
+
+    <record id="tax2" model="account.tax.template">
+      <field name="chart_template_id" ref="l10n_no_chart_template" />
+      <field name="name">Utgående 15% MVA</field>
+      <field name="amount">0.150000</field>
+      <field name="type">percent</field>
+      <field name="account_collected_id" ref="2700" />
+      <field name="account_paid_id" ref="2700" />
+      <field name="base_code_id" ref="vat_code_base_due" />
+        <field name="base_sign">1</field>
+        <field name="tax_sign">1</field>
+      <field name="ref_base_code_id" ref="vat_code_receivable_net" />
+        <field name="tax_code_id" ref="vat_code_due_tva" />
+      <field name="ref_tax_code_id" ref="vat_code_receivable" />
+        <field name="type_tax_use">sale</field>
+    </record>
+
+    <record id="tax3" model="account.tax.template">
+      <field name="chart_template_id" ref="l10n_no_chart_template" />
+      <field name="name">Utgående 8% MVA</field>
+      <field name="amount">0.080000</field>
+      <field name="type">percent</field>
+      <field name="account_collected_id" ref="2700" />
+      <field name="account_paid_id" ref="2700" />
+      <field name="base_code_id" ref="vat_code_base_due" />
+        <field name="base_sign">1</field>
+        <field name="tax_sign">1</field>
+      <field name="ref_base_code_id" ref="vat_code_receivable_net" />
+        <field name="tax_code_id" ref="vat_code_due_tva" />
+      <field name="ref_tax_code_id" ref="vat_code_receivable" />
+        <field name="type_tax_use">sale</field>
+    </record>
+
+    <record id="tax4" model="account.tax.template">
+      <field name="chart_template_id" ref="l10n_no_chart_template" />
+      <field name="name">Inngående 25% MVA</field>
+      <field name="amount">0.25000</field>
+      <field name="type">percent</field>
+      <field name="account_collected_id" ref="2710" />
+      <field name="account_paid_id" ref="2710" />
+      <field name="base_code_id" ref="vat_code_receivable_net" />
+        <field name="base_sign">-1</field>
+        <field name="tax_sign">-1</field>
+      <field name="ref_base_code_id" ref="vat_code_base_due" />
+        <field name="tax_code_id" ref="vat_code_receivable" />
+      <field name="ref_tax_code_id" ref="vat_code_payable" />
+        <field name="type_tax_use">purchase</field>
+    </record>
+
+    <record id="tax5" model="account.tax.template">
+      <field name="chart_template_id" ref="l10n_no_chart_template" />
+      <field name="name">Inngående 15% MVA</field>
+      <field name="amount">0.150000</field>
+      <field name="type">percent</field>
+      <field name="account_collected_id" ref="2710" />
+      <field name="account_paid_id" ref="2710" />
+      <field name="base_code_id" ref="vat_code_receivable_net" />
+        <field name="base_sign">-1</field>
+        <field name="tax_sign">-1</field>
+      <field name="ref_base_code_id" ref="vat_code_base_due" />
+        <field name="tax_code_id" ref="vat_code_receivable" />
+      <field name="ref_tax_code_id" ref="vat_code_payable" />
+        <field name="type_tax_use">purchase</field>
+    </record>
+
+    <record id="tax6" model="account.tax.template">
+      <field name="chart_template_id" ref="l10n_no_chart_template" />
+      <field name="name">Inngående 8% MVA</field>
+      <field name="amount">0.080000</field>
+      <field name="type">percent</field>
+      <field name="account_collected_id" ref="2710" />
+      <field name="account_paid_id" ref="2710" />
+      <field name="base_code_id" ref="vat_code_receivable_net" />
+        <field name="base_sign">-1</field>
+        <field name="tax_sign">-1</field>
+      <field name="ref_base_code_id" ref="vat_code_base_due" />
+        <field name="tax_code_id" ref="vat_code_receivable" />
+      <field name="ref_tax_code_id" ref="vat_code_payable" />
+        <field name="type_tax_use">purchase</field>
+    </record>
+
+  </data>
+</openerp>
