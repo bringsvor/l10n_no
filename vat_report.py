@@ -25,6 +25,7 @@ from common_report_header import common_report_header
 
 import time
 
+
 class secret_tax_report(report_sxw.rml_parse, common_report_header):
     #def _get_account(self, data):
     #    assert False
@@ -34,10 +35,6 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
     #    assert False
     #def _get_general(self, data):
     #    assert False
-
-
-    def render_html(self, cr, uid, ids, data=None, context=None):
-        assert False
 
     def __init__(self, cr, uid, name, context=None):
         print "INIT!"
@@ -162,6 +159,53 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
         (11, 'Avgift å betale'),
         (11, 'Avgift til gode')
     ]
+### Trur vi må bruke ir.property for å konfigurere dette, i alle fall felt 7.
+    """
+
+elmatica8-15=# select tax.name, tc.name, tax.type_tax_use from account_tax tax, account_tax_code tc where tax.base_code_id=tc.id;
+          name           |          name           | type_tax_use
+-------------------------+-------------------------+--------------
+ Utgående 25% mva(25.0%) | Base of Taxed Sales     | sale
+ Utgående 15% MVA        | Base of Taxed Sales     | sale
+ Utgående 8% MVA         | Base of Taxed Sales     | sale
+ Inngående 25% MVA       | Base of Taxed Purchases | purchase
+ Inngående 15% MVA       | Base of Taxed Purchases | purchase
+ Inngående 8% MVA        | Base of Taxed Purchases | purchase
+(6 rows)
+"""
+    """
+
+SELECT SUM(line.tax_amount) AS tax_amount,
+                        SUM(line.debit) AS debit,
+                        SUM(line.credit) AS credit,
+                        COUNT(*) AS count,
+                        account.id AS account_id,
+                        account.name AS name,
+                        account.code AS code,
+                line.period_id, tax.name
+                    FROM account_move_line AS line,
+                        account_account AS account ,
+account_tax_code as tax
+                    WHERE line.state <> 'draft'
+                    --    AND line.tax_code_id = %s
+and line.tax_code_id=tax.id
+                        AND line.account_id = account.id
+                    --    AND account.company_id = %s
+                    --    AND line.period_id IN %s
+                        AND account.active
+                    GROUP BY account.id,account.name,account.code, line.period_id, tax.name;
+
+
+
+ tax_amount | debit | credit  | count | account_id |                     name                      | code | period_id |         name
+------------+-------+---------+-------+------------+-----------------------------------------------+------+-----------+----------------------
+      80.00 |  0.00 |   80.00 |     1 |        133 | Utgående merverdiavgift                       | 2700 |         9 | Tax Due (Tax to pay)
+    1000.00 |  0.00 | 1000.00 |     1 |        162 | Salgsinntekt handelsvarer avgiftspl. høy sats | 3000 |         9 | Base of Taxed Sales
+(2 rows)
+
+"""
+
+
 
     def _get_lines(self, based_on, company_id=False, parent=False, level=0, context=None):
         lines = []
