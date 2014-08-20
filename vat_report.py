@@ -88,6 +88,34 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
             res += self._get_codes(based_on, company_id, code.id, level+1, context=context)
         return res
 
+    def _get_amount(self, tax_code_id, period_list, company_id, based_on, context):
+        print "GET AMOUNT", tax_code_id
+        period_ids = tuple(period_list)
+        if based_on == 'payments':
+            assert False
+        else:
+            self.cr.execute('SELECT SUM(line.tax_amount) AS tax_amount, \
+                SUM(line.debit) AS debit, \
+                SUM(line.credit) AS credit, \
+                COUNT(*) AS count, \
+                account.id AS account_id, \
+                account.name AS name,  \
+                account.code AS code \
+                FROM account_move_line AS line, \
+                    account_account AS account \
+                WHERE line.state <> %s \
+                    AND line.tax_code_id = %s  \
+                    AND line.account_id = account.id \
+                    AND account.company_id = %s \
+                    AND line.period_id IN %s\
+                    AND account.active \
+                GROUP BY account.id,account.name,account.code', ('draft', tax_code_id,
+                        company_id, period_ids,))
+            res = self.cr.dictfetchall()
+            assert len(res) < 2
+            return res
+
+
 
     def _get_general(self, tax_code_id, period_list, company_id, based_on, context=None):
         if not self.display_detail:
@@ -145,8 +173,12 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
             i+=1
         return res
 
+    def _get_total_turnover(self, cr, uid):
+        return 0
+
+
     codes = [
-        (1, 'Samlet omsetning og uttak innenfor og utenfor mva.-loven'),
+        (1, 'Samlet omsetning og uttak innenfor og utenfor mva.-loven', _get_total_turnover),
         (2, 'Samlet omsetning og uttak innenfor mva.-loven'),
         (3, 'Omsetning og uttak i post 2 som er fritatt for mva'),
         (4, 'Omsetning og uttak i post 2 med standard sats'),
@@ -207,8 +239,53 @@ and line.tax_code_id=tax.id
 
 
 
+
+
     def _get_lines(self, based_on, company_id=False, parent=False, level=0, context=None):
+        # Get the base codes
+        self.cr.execute('select tax.name as taxname, tax.type, tax.amount, tax.type_tax_use, '
+                                ' tc.id, tc.code, tc.name as taxcodename '
+                                'from account_tax tax, account_tax_code tc where tax.base_code_id=tc.id '
+                                'order by tax.amount desc, tax.type_tax_use'
+        )
+
+        basecodes =  self.cr.dictfetchall()
+        period_list = self.period_ids
+        if not period_list:
+            self.cr.execute ("select id from account_fiscalyear")
+            fy = self.cr.fetchall()
+            self.cr.execute ("select id from account_period where fiscalyear_id = %s",(fy[0][0],))
+            periods = self.cr.fetchall()
+            for p in periods:
+                period_list.append(p[0])
+
+
+        MÅ FIKSE SLIK AT BASE CODE ER FORSKJELLIG!
+        base_amounts = {}
         lines = []
+        for codeinfo in basecodes:
+            print "CODEINFO", codeinfo
+            if codeinfo['type_tax_use'] != 'sale':
+                continue
+
+            res_baseamount = self._get_amount(codeinfo['id'], period_list, company_id, based_on, context=context)
+            if not res_baseamount:
+                continue
+
+            res_dict = {'code' : codeinfo['code'],
+                        'name' : codeinfo['taxname'],
+                        'tax_base' : res_baseamount[0]['tax_amount'],
+                        'tax_amount' : 0.00,
+                        'percentage' : codeinfo['amount'] * 100,
+                        'tax_use' : codeinfo['type_tax_use']}
+            print "RES_DICT", res_dict
+            #base_amounts.append( (codeinfo['tax_use'], codeinfo['amount'], res_baseamount['tax_amount'] )  )
+            #res_general = self._get_general(codeinfo['id'], period_list, company_id, based_on, context=context)
+            lines.append(res_dict)
+
+        return lines
+
+        """
         for linetype in self.codes:
             res_dict = { 'code': linetype[0],
                 'name': linetype[1],
@@ -257,6 +334,7 @@ and line.tax_code_id=tax.id
                 ind_general+=1
             i+=1
         return top_result
+        """
 
     def _add_codes(self, based_on, account_list=None, period_list=None, context=None):
         if account_list is None:
