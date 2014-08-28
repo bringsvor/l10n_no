@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Include fields created in account.tax and account.tax.template form views -->
+		<record model="ir.ui.view" id="view_l10n_no_account_tax_template_form">
+			<field name="name">l10n_no_account.tax.template.form</field>
+			<field name="model">account.tax.template</field>
+			<field name="inherit_id" ref="account.view_account_tax_template_form"/>
+			<field name="arch" type="xml">
+				<field position="after" name="description">
+                    <field name="position_in_tax_report" />
+			    </field>
+			</field>
+		</record>
+
+        <record id="view_l10n_no_tax_form" model="ir.ui.view">
+            <field name="name">account_tax_l10n_no_inherit</field>
+            <field name="model">account.tax</field>
+            <field name="inherit_id" ref="account.view_tax_form"/>
+            <field name="arch" type="xml">
+                <field name="description" position="after">
+                    <field name="position_in_tax_report" />
+                </field>
+            </field>
+        </record>
+
+       </data>
+    </openerp>

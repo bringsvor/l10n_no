@@ -3,84 +3,84 @@
   <data>
 <!-- TODO: Avoid duplicates -->
       <!-- Account Types -->
-  
-      <record model="account.account.type" id="account_type_receivable" >
+  <!-- Don't want them right now
+      <record model="account.account.type" id="account.data_account_type_receivable" >
         <field name="name">Receivable</field>
         <field name="code">receivable</field>
         <field name="close_method">unreconciled</field>
       </record>
 
-      <record model="account.account.type" id="account_type_payable" >
+      <record model="account.account.type" id="account.data_account_type_payable" >
         <field name="name">Payable</field>
         <field name="code">payable</field>
         <field name="close_method">unreconciled</field>
       </record>
 
-      <record model="account.account.type" id="account_type_view">
+      <record model="account.account.type" id="account.data_account_type_view">
         <field name="name">View</field>
         <field name="code">view</field>
         <field name="close_method">none</field>
       </record>
 
-      <record model="account.account.type" id="account_type_income" >
+      <record model="account.account.type" id="account.data_account_type_income" >
         <field name="name">Income</field>
         <field name="code">income</field>
         <field name="close_method">none</field>
       </record>
 
-      <record model="account.account.type" id="account_type_expense">
+      <record model="account.account.type" id="account.data_account_type_expense">
         <field name="name">Expense</field>
         <field name="code">expense</field>
         <field name="close_method">none</field>
       </record>
 
-      <record model="account.account.type" id="account_type_tax">
+      <record model="account.account.type" id="account.data_account_type_tax">
         <field name="name">Tax</field>
         <field name="code">tax</field>
         <field name="close_method">unreconciled</field>
       </record>
 
-      <record model="account.account.type" id="account_type_bank">
+      <record model="account.account.type" id="account.data_account_type_bank">
         <field name="name">Bank</field>
         <field name="code">bank</field>
         <field name="close_method">balance</field>
         <field name="report_type">asset</field>
       </record>
 
-      <record model="account.account.type" id="account_type_cash">
+      <record model="account.account.type" id="account.data_account_type_cash">
         <field name="name">Cash</field>
         <field name="code">cash</field>
         <field name="close_method">balance</field>
         <field name="report_type">asset</field>
       </record>
 
-      <record model="account.account.type" id="account_type_asset">
+      <record model="account.account.type" id="account.data_account_type_asset">
         <field name="name">Asset</field>
         <field name="code">asset</field>
         <field name="close_method">balance</field>
       </record>
 
-      <record model="account.account.type" id="account_type_equity">
+      <record model="account.account.type" id="account.data_account_type_equity">
         <field name="name">Equity</field>
         <field name="code">equity</field>
         <field name="report_type">liability</field>
         <field name="close_method">balance</field>
       </record>
       
-      <record model="account.account.type" id="account_type_liability">
+      <record model="account.account.type" id="account.data_account_type_liability">
         <field name="name">Liability</field>
         <field name="code">Liability</field>
         <field name="report_type">liability</field>
         <field name="close_method">balance</field>
       </record>  
-
+-->
     <!-- Account Template -->
 
     <record id="0" model="account.account.template">
       <field name="name">kontoplan</field>
       <field name="code">0</field>
       <field name="type">view</field>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
     </record>
 
     <record id="1" model="account.account.template">
@@ -88,7 +88,7 @@
       <field name="code">1</field>
       <field name="reconcile" eval="False"/>
       <field name="type">view</field>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="parent_id" ref="0"/>
     </record>
 
@@ -96,7 +96,7 @@
       <field name="name">Immaterielle eiendeler o.l</field>
       <field name="code">10</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="1" name="parent_id" />
     </record>
@@ -105,7 +105,7 @@
       <field name="name">Forskning og utvikling</field>
       <field name="code">1000</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="10" name="parent_id" />
     </record>
@@ -114,7 +114,7 @@
       <field name="name">Konsesjoner</field>
       <field name="code">1020</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="10" name="parent_id" />
     </record>
@@ -123,7 +123,7 @@
       <field name="name">Patenter</field>
       <field name="code">1030</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="10" name="parent_id" />
     </record>
@@ -132,7 +132,7 @@
       <field name="name">Lisenser</field>
       <field name="code">1040</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="10" name="parent_id" />
     </record>
@@ -141,7 +141,7 @@
       <field name="name">Varemerker</field>
       <field name="code">1050</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="10" name="parent_id" />
     </record>
@@ -150,7 +150,7 @@
       <field name="name">Andre rettigheter</field>
       <field name="code">1060</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="10" name="parent_id" />
     </record>
@@ -159,7 +159,7 @@
       <field name="name">Utsatt skattfordel</field>
       <field name="code">1070</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="10" name="parent_id" />
     </record>
@@ -168,7 +168,7 @@
       <field name="name">Goodwill</field>
       <field name="code">1080</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="10" name="parent_id" />
     </record>
@@ -177,7 +177,7 @@
       <field name="name">Tomter, bygninger og annen fast eiendom</field>
       <field name="code">11</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="1" name="parent_id" />
     </record>
@@ -186,7 +186,7 @@
       <field name="name">Bygninger</field>
       <field name="code">1100</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="11" name="parent_id" />
     </record>
@@ -195,7 +195,7 @@
       <field name="name">Bygningsmessige anlegg</field>
       <field name="code">1120</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="11" name="parent_id" />
     </record>
@@ -204,7 +204,7 @@
       <field name="name">Anlegg under utførelse</field>
       <field name="code">1130</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="11" name="parent_id" />
     </record>
@@ -213,7 +213,7 @@
       <field name="name">Jord- og skogbrukseiendommer</field>
       <field name="code">1140</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="11" name="parent_id" />
     </record>
@@ -222,7 +222,7 @@
       <field name="name">Tomter og andre grunnarealer</field>
       <field name="code">1150</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="11" name="parent_id" />
     </record>
@@ -231,7 +231,7 @@
       <field name="name">Boliger inklusive tomter</field>
       <field name="code">1160</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="11" name="parent_id" />
     </record>
@@ -240,7 +240,7 @@
       <field name="name">Transportmidler, inventar og maskiner o.l.</field>
       <field name="code">12</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="1" name="parent_id" />
     </record>
@@ -249,7 +249,7 @@
       <field name="name">Maskiner og anlegg</field>
       <field name="code">1200</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="12" name="parent_id" />
     </record>
@@ -258,7 +258,7 @@
       <field name="name">Maskiner og anlegg under utførelse</field>
       <field name="code">1210</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="12" name="parent_id" />
     </record>
@@ -267,7 +267,7 @@
       <field name="name">Skip</field>
       <field name="code">1220</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="12" name="parent_id" />
     </record>
@@ -276,7 +276,7 @@
       <field name="name">Biler</field>
       <field name="code">1230</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="12" name="parent_id" />
     </record>
@@ -285,7 +285,7 @@
       <field name="name">Andre transportmidler</field>
       <field name="code">1240</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="12" name="parent_id" />
     </record>
@@ -294,7 +294,7 @@
       <field name="name">Inventar</field>
       <field name="code">1250</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="12" name="parent_id" />
     </record>
@@ -303,7 +303,7 @@
       <field name="name">Bygninger med annen avskrivningstid</field>
       <field name="code">1260</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="12" name="parent_id" />
     </record>
@@ -312,7 +312,7 @@
       <field name="name">Verktøy mv.</field>
       <field name="code">1270</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="12" name="parent_id" />
     </record>
@@ -321,7 +321,7 @@
       <field name="name">Kontormaskiner</field>
       <field name="code">1280</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="12" name="parent_id" />
     </record>
@@ -330,7 +330,7 @@
       <field name="name">Finansielle anleggsmidler</field>
       <field name="code">13</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="1" name="parent_id" />
     </record>
@@ -339,7 +339,7 @@
       <field name="name">Investeringer i datterselskaper</field>
       <field name="code">1300</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="13" name="parent_id" />
     </record>
@@ -348,7 +348,7 @@
       <field name="name">Investeringer annet foretak i samme konsern</field>
       <field name="code">1310</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="13" name="parent_id" />
     </record>
@@ -357,7 +357,7 @@
       <field name="name">Lån til foretak samme konsern</field>
       <field name="code">1320</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="13" name="parent_id" />
     </record>
@@ -366,7 +366,7 @@
       <field name="name">Investeringer i tilknyttede selskap</field>
       <field name="code">1330</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="13" name="parent_id" />
     </record>
@@ -375,7 +375,7 @@
       <field name="name">Lån til tilknyttede selskap</field>
       <field name="code">1340</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="13" name="parent_id" />
     </record>
@@ -384,7 +384,7 @@
       <field name="name">Investeringer i aksjer og eiendeler</field>
       <field name="code">1350</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="13" name="parent_id" />
     </record>
@@ -393,7 +393,7 @@
       <field name="name">Obligasjoner</field>
       <field name="code">1360</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="13" name="parent_id" />
     </record>
@@ -402,7 +402,7 @@
       <field name="name">Fordringer på eiere og styremedlemmer</field>
       <field name="code">1370</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="13" name="parent_id" />
     </record>
@@ -411,7 +411,7 @@
       <field name="name">Fordringer på ansatte</field>
       <field name="code">1380</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="13" name="parent_id" />
     </record>
@@ -420,7 +420,7 @@
       <field name="name">Andre fordringer</field>
       <field name="code">1390</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="13" name="parent_id" />
     </record>
@@ -429,7 +429,7 @@
       <field name="name">Varelager og forskudd til leverandører</field>
       <field name="code">14</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="1" name="parent_id" />
     </record>
@@ -438,7 +438,7 @@
       <field name="name">Råvarer og innkjøpte halvfabrikater</field>
       <field name="code">1400</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="14" name="parent_id" />
     </record>
@@ -447,7 +447,7 @@
       <field name="name">Varer under utvikling</field>
       <field name="code">1420</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="14" name="parent_id" />
     </record>
@@ -456,7 +456,7 @@
       <field name="name">Ferdige egentilvirkede varer</field>
       <field name="code">1440</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="14" name="parent_id" />
     </record>
@@ -465,7 +465,7 @@
       <field name="name">Innkjøpte varer for videresalg</field>
       <field name="code">1460</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="14" name="parent_id" />
     </record>
@@ -474,7 +474,7 @@
       <field name="name">Forskuddsbetaling til leverandører</field>
       <field name="code">1480</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="14" name="parent_id" />
     </record>
@@ -483,7 +483,7 @@
       <field name="name">Kortsiktige fordringer</field>
       <field name="code">15</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="1" name="parent_id" />
     </record>
@@ -492,7 +492,7 @@
       <field name="name">Kundefordringer</field>
       <field name="code">1500</field>
       <field name="reconcile" eval="True"/>
-      <field name="user_type" ref="account_type_receivable"/>
+      <field name="user_type" ref="account.data_account_type_receivable"/>
       <field name="type">receivable</field>
       <field ref="15" name="parent_id" />
     </record>
@@ -501,7 +501,7 @@
       <field name="name">Opptjent ikke fakturert inntekt</field>
       <field name="code">1530</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="15" name="parent_id" />
     </record>
@@ -510,7 +510,7 @@
       <field name="name">Kundefordringer på selskap samme konsern</field>
       <field name="code">1550</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="15" name="parent_id" />
     </record>
@@ -519,7 +519,7 @@
       <field name="name">Andre fordringer på selskap samme konsern</field>
       <field name="code">1560</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="15" name="parent_id" />
     </record>
@@ -528,7 +528,7 @@
       <field name="name">Avsetning tap på fordringer</field>
       <field name="code">1580</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="15" name="parent_id" />
     </record>
@@ -537,7 +537,7 @@
       <field name="name">Merverdiavgift, opptjente offentlige tilskudd o.l.</field>
       <field name="code">16</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="1" name="parent_id" />
     </record>
@@ -546,7 +546,7 @@
       <field name="name">Utgående merverdiavgift</field>
       <field name="code">1600</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -555,7 +555,7 @@
       <field name="name">Utgående merverdiavgift høy sats</field>
       <field name="code">1601</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -564,7 +564,7 @@
       <field name="name">Utgående merverdiavgift kjøp tjen. fra utlandet</field>
       <field name="code">1602</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -573,7 +573,7 @@
       <field name="name">Utgående merverdiavgift middels sats</field>
       <field name="code">1603</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -582,7 +582,7 @@
       <field name="name">Utgående merverdiavgift lav sats</field>
       <field name="code">1604</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -591,7 +591,7 @@
       <field name="name">Inngående merverdiavgift</field>
       <field name="code">1610</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -600,7 +600,7 @@
       <field name="name">Inngående merverdiavgift høy sats</field>
       <field name="code">1611</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -609,7 +609,7 @@
       <field name="name">Inngående merverdiavgift kjøp tjen. fra utlandet</field>
       <field name="code">1612</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -618,7 +618,7 @@
       <field name="name">Inngående merverdiavgift middels sats</field>
       <field name="code">1613</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -627,7 +627,7 @@
       <field name="name">Inngående merverdiavgift lav sats</field>
       <field name="code">1614</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -636,7 +636,7 @@
       <field name="name">Investeringsavgift</field>
       <field name="code">1620</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -645,7 +645,7 @@
       <field name="name">Grunnlag investeringsavgift</field>
       <field name="code">1630</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -654,7 +654,7 @@
       <field name="name">Oppgjørskonto merverdiavgift</field>
       <field name="code">1640</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -663,7 +663,7 @@
       <field name="name">Krav på offentlige tilskudd</field>
       <field name="code">1670</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="16" name="parent_id" />
     </record>
@@ -672,7 +672,7 @@
       <field name="name">Forskuddsbetalt kostnad, påløpt inntekt o.l.</field>
       <field name="code">17</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="1" name="parent_id" />
     </record>
@@ -681,7 +681,7 @@
       <field name="name">Forskuddsbetalte leier</field>
       <field name="code">1700</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="17" name="parent_id" />
     </record>
@@ -690,7 +690,7 @@
       <field name="name">Forskuddsbetalte renter</field>
       <field name="code">1710</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="17" name="parent_id" />
     </record>
@@ -699,7 +699,7 @@
       <field name="name">Påløpte leier</field>
       <field name="code">1750</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="17" name="parent_id" />
     </record>
@@ -708,7 +708,7 @@
       <field name="name">Påløpte renter</field>
       <field name="code">1760</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="17" name="parent_id" />
     </record>
@@ -717,7 +717,7 @@
       <field name="name">Krav på innbetaling av selskapskapital</field>
       <field name="code">1780</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="17" name="parent_id" />
     </record>
@@ -726,7 +726,7 @@
       <field name="name">Interimskonto</field>
       <field name="code">1790</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="17" name="parent_id" />
     </record>
@@ -735,7 +735,7 @@
       <field name="name">Kortsiktige finansinvesteringer</field>
       <field name="code">18</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="1" name="parent_id" />
     </record>
@@ -744,7 +744,7 @@
       <field name="name">Aksjer og andeler i foretak samme konsern</field>
       <field name="code">1800</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="18" name="parent_id" />
     </record>
@@ -753,7 +753,7 @@
       <field name="name">Markedsbaserte aksjer</field>
       <field name="code">1810</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="18" name="parent_id" />
     </record>
@@ -762,7 +762,7 @@
       <field name="name">Andre aksjer</field>
       <field name="code">1820</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="18" name="parent_id" />
     </record>
@@ -771,7 +771,7 @@
       <field name="name">Markedsbaserte obligasjoner</field>
       <field name="code">1830</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="18" name="parent_id" />
     </record>
@@ -780,7 +780,7 @@
       <field name="name">Andre obligasjoner</field>
       <field name="code">1840</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="18" name="parent_id" />
     </record>
@@ -789,7 +789,7 @@
       <field name="name">Markedsbaserte obligasjoner</field>
       <field name="code">1850</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="18" name="parent_id" />
     </record>
@@ -798,7 +798,7 @@
       <field name="name">Andre sertifikater</field>
       <field name="code">1860</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="18" name="parent_id" />
     </record>
@@ -807,7 +807,7 @@
       <field name="name">Andre markedsbaserte finansielle instrumenter</field>
       <field name="code">1870</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="18" name="parent_id" />
     </record>
@@ -816,7 +816,7 @@
       <field name="name">Andre finansielle instrumenter</field>
       <field name="code">1880</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="18" name="parent_id" />
     </record>
@@ -825,7 +825,7 @@
       <field name="name">Bankinnskudd, kontanter og lignende</field>
       <field name="code">19</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="1" name="parent_id" />
     </record>
@@ -834,7 +834,7 @@
       <field name="name">Kontanter</field>
       <field name="code">1900</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_cash"/>
+      <field name="user_type" ref="account.data_account_type_cash"/>
       <field name="type">liquidity</field>
       <field ref="19" name="parent_id" />
     </record>
@@ -843,7 +843,7 @@
       <field name="name">Kasse</field>
       <field name="code">1910</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">liquidity</field>
       <field ref="19" name="parent_id" />
     </record>
@@ -852,7 +852,7 @@
       <field name="name">Bankinnskudd</field>
       <field name="code">1920</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">liquidity</field>
       <field ref="19" name="parent_id" />
     </record>
@@ -861,7 +861,7 @@
       <field name="name">Banke</field>
       <field name="code">1930</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_bank"/>
+      <field name="user_type" ref="account.data_account_type_bank"/>
       <field name="type">liquidity</field>
       <field ref="19" name="parent_id" />
     </record>
@@ -870,7 +870,7 @@
       <field name="name">Bankinnskudd for skattetrekk</field>
       <field name="code">1950</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_asset"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">liquidity</field>
       <field ref="19" name="parent_id" />
     </record>
@@ -879,7 +879,7 @@
       <field name="name">EGENKAPITAL OG GJELD</field>
       <field name="code">2</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field name="parent_id" ref="0"/>
     </record>
@@ -888,7 +888,7 @@
       <field name="name">Egenkapital AS/ASA</field>
       <field name="code">20</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="2" name="parent_id" />
     </record>
@@ -897,7 +897,7 @@
       <field name="name">Aksjekapital</field>
       <field name="code">2000</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_equity"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="20" name="parent_id" />
     </record>
@@ -906,7 +906,7 @@
       <field name="name">Egne aksjer</field>
       <field name="code">2010</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_equity"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="20" name="parent_id" />
     </record>
@@ -915,7 +915,7 @@
       <field name="name">Overkursfond</field>
       <field name="code">2020</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_equity"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="20" name="parent_id" />
     </record>
@@ -924,7 +924,7 @@
       <field name="name">Fond for vurderingsforskjeller</field>
       <field name="code">2040</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_equity"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="20" name="parent_id" />
     </record>
@@ -933,7 +933,7 @@
       <field name="name">Annen egenkapital</field>
       <field name="code">2050</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_equity"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="20" name="parent_id" />
     </record>
@@ -942,7 +942,7 @@
       <field name="name">Udekket tap</field>
       <field name="code">2080</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_equity"/>
+      <field name="user_type" ref="account.data_account_type_asset"/>
       <field name="type">other</field>
       <field ref="20" name="parent_id" />
     </record>
@@ -951,7 +951,7 @@
       <field name="name">Avsetning for forpliktelser </field>
       <field name="code">21</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="2" name="parent_id" />
     </record>
@@ -960,7 +960,7 @@
       <field name="name">Pensjonsforpliktelser</field>
       <field name="code">2100</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="21" name="parent_id" />
     </record>
@@ -969,7 +969,7 @@
       <field name="name">Utsatt skatt</field>
       <field name="code">2120</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="21" name="parent_id" />
     </record>
@@ -978,7 +978,7 @@
       <field name="name">Uopptjent inntekt</field>
       <field name="code">2160</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="21" name="parent_id" />
     </record>
@@ -987,7 +987,7 @@
       <field name="name">Andre avsetninger for forpliktelser</field>
       <field name="code">2180</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="21" name="parent_id" />
     </record>
@@ -996,7 +996,7 @@
       <field name="name">Annen langsiktig gjeld</field>
       <field name="code">22</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="2" name="parent_id" />
     </record>
@@ -1005,7 +1005,7 @@
       <field name="name">Konvertible lån</field>
       <field name="code">2200</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="22" name="parent_id" />
     </record>
@@ -1014,7 +1014,7 @@
       <field name="name">Obligasjonslån</field>
       <field name="code">2210</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="22" name="parent_id" />
     </record>
@@ -1023,7 +1023,7 @@
       <field name="name">Gjeld til kredittinstitusjoner</field>
       <field name="code">2220</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="22" name="parent_id" />
     </record>
@@ -1032,7 +1032,7 @@
       <field name="name">Pantelån</field>
       <field name="code">2240</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="22" name="parent_id" />
     </record>
@@ -1041,7 +1041,7 @@
       <field name="name">Gjeld til selskap i samme konsern</field>
       <field name="code">2260</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="22" name="parent_id" />
     </record>
@@ -1050,7 +1050,7 @@
       <field name="name">Andre valutalån</field>
       <field name="code">2270</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="22" name="parent_id" />
     </record>
@@ -1059,7 +1059,7 @@
       <field name="name">Stille interessentinnskudd og ansv. lånekapital</field>
       <field name="code">2280</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="22" name="parent_id" />
     </record>
@@ -1068,7 +1068,7 @@
       <field name="name">Kortsiktige konvertible lån, obligasjonslån og gjeld til kredittinstitusjoner</field>
       <field name="code">23</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="2" name="parent_id" />
     </record>
@@ -1077,7 +1077,7 @@
       <field name="name">Konvertible lån</field>
       <field name="code">2300</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="23" name="parent_id" />
     </record>
@@ -1086,7 +1086,7 @@
       <field name="name">Setifikatlån</field>
       <field name="code">2320</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="23" name="parent_id" />
     </record>
@@ -1095,7 +1095,7 @@
       <field name="name">Andre valutalån</field>
       <field name="code">2340</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="23" name="parent_id" />
     </record>
@@ -1104,7 +1104,7 @@
       <field name="name">Byggelån</field>
       <field name="code">2360</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="23" name="parent_id" />
     </record>
@@ -1113,7 +1113,7 @@
       <field name="name">Kassekreditt</field>
       <field name="code">2380</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="23" name="parent_id" />
     </record>
@@ -1122,7 +1122,7 @@
       <field name="name">Leverandørgjeld</field>
       <field name="code">24</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="2" name="parent_id" />
     </record>
@@ -1131,7 +1131,7 @@
       <field name="name">Leverandørgjeld</field>
       <field name="code">2400</field>
       <field name="reconcile" eval="True"/>
-      <field name="user_type" ref="account_type_payable"/>
+      <field name="user_type" ref="account.data_account_type_payable"/>
       <field name="type">payable</field>
       <field ref="24" name="parent_id" />
     </record>
@@ -1140,7 +1140,7 @@
       <field name="name">Leverandørgjeld til selskap i samme konsern</field>
       <field name="code">2460</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_payable"/>
+      <field name="user_type" ref="account.data_account_type_payable"/>
       <field name="type">payable</field>
       <field ref="24" name="parent_id" />
     </record>
@@ -1149,7 +1149,7 @@
       <field name="name">Betalbar skatt</field>
       <field name="code">25</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="2" name="parent_id" />
     </record>
@@ -1158,7 +1158,7 @@
       <field name="name">Betalbar skatt</field>
       <field name="code">2500</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="25" name="parent_id" />
     </record>
@@ -1167,7 +1167,7 @@
       <field name="name">Betalbar skatt</field>
       <field name="code">2510</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="25" name="parent_id" />
     </record>
@@ -1176,7 +1176,7 @@
       <field name="name">Refusjon skatt etter Skatteloven §31 5. ledd</field>
       <field name="code">2530</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="25" name="parent_id" />
     </record>
@@ -1185,7 +1185,7 @@
       <field name="name">Forhåndsskatt</field>
       <field name="code">2540</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="25" name="parent_id" />
     </record>
@@ -1194,7 +1194,7 @@
       <field name="name">Skattetrekk og andre trekk</field>
       <field name="code">26</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="2" name="parent_id" />
     </record>
@@ -1203,7 +1203,7 @@
       <field name="name">Forskuddstrekk</field>
       <field name="code">2600</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="26" name="parent_id" />
     </record>
@@ -1212,7 +1212,7 @@
       <field name="name">Påleggstrekk</field>
       <field name="code">2610</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="26" name="parent_id" />
     </record>
@@ -1221,7 +1221,7 @@
       <field name="name">Bidragstrekk</field>
       <field name="code">2620</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="26" name="parent_id" />
     </record>
@@ -1230,7 +1230,7 @@
       <field name="name">Trygdetrekk</field>
       <field name="code">2630</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="26" name="parent_id" />
     </record>
@@ -1239,7 +1239,7 @@
       <field name="name">Forsikringstrekk</field>
       <field name="code">2640</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="26" name="parent_id" />
     </record>
@@ -1248,7 +1248,7 @@
       <field name="name">Trukket fagforeningskontigent</field>
       <field name="code">2650</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="26" name="parent_id" />
     </record>
@@ -1257,7 +1257,7 @@
       <field name="name">Skyldige offentlige avgifter</field>
       <field name="code">27</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="2" name="parent_id" />
     </record>
@@ -1266,7 +1266,7 @@
       <field name="name">Utgående merverdiavgift</field>
       <field name="code">2700</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1275,7 +1275,7 @@
       <field name="name">Utgående merverdiavgift høy sats</field>
       <field name="code">2701</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1284,7 +1284,7 @@
       <field name="name">Utgående merverdiavgift kjøp tjen. fra utlandet</field>
       <field name="code">2702</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1293,7 +1293,7 @@
       <field name="name">Utgående merverdiavgift middels sats</field>
       <field name="code">2703</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1302,7 +1302,7 @@
       <field name="name">Utgående merverdiavgift lav sats</field>
       <field name="code">2704</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1311,7 +1311,7 @@
       <field name="name">Inngående merverdiavgift</field>
       <field name="code">2710</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1320,7 +1320,7 @@
       <field name="name">Inngående merverdiavgift høy sats</field>
       <field name="code">2711</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1329,7 +1329,7 @@
       <field name="name">Inngående merverdiavgift kjøp tjen. fra utlandet</field>
       <field name="code">2712</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1338,7 +1338,7 @@
       <field name="name">Inngående merverdiavgift middels sats</field>
       <field name="code">2713</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1347,7 +1347,7 @@
       <field name="name">Inngående merverdiavgift lav sats</field>
       <field name="code">2714</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1356,7 +1356,7 @@
       <field name="name">Investeringsavgift</field>
       <field name="code">2720</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1365,7 +1365,7 @@
       <field name="name">Grunnlag investeringsavgift</field>
       <field name="code">2730</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1374,7 +1374,7 @@
       <field name="name">Oppgjørskonto merverdiavgift</field>
       <field name="code">2740</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1383,7 +1383,7 @@
       <field name="name">Skyldig arbeidsgiveravgift</field>
       <field name="code">2770</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1392,7 +1392,7 @@
       <field name="name">Påløpt arbeidsgiveravgift</field>
       <field name="code">2780</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="27" name="parent_id" />
     </record>
@@ -1401,7 +1401,7 @@
       <field name="name">Utbytte </field>
       <field name="code">28</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="2" name="parent_id" />
     </record>
@@ -1410,7 +1410,7 @@
       <field name="name">Avsatt utbytte</field>
       <field name="code">2800</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="28" name="parent_id" />
     </record>
@@ -1419,7 +1419,7 @@
       <field name="name">Annen kortsiktig gjeld</field>
       <field name="code">29</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="2" name="parent_id" />
     </record>
@@ -1428,7 +1428,7 @@
       <field name="name">Forskudd fra kunder</field>
       <field name="code">2900</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="29" name="parent_id" />
     </record>
@@ -1437,7 +1437,7 @@
       <field name="name">Gjeld til ansatte og eiere</field>
       <field name="code">2910</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="29" name="parent_id" />
     </record>
@@ -1446,7 +1446,7 @@
       <field name="name">Gjeld til selskap i samme konsern</field>
       <field name="code">2920</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="29" name="parent_id" />
     </record>
@@ -1455,7 +1455,7 @@
       <field name="name">Lønn</field>
       <field name="code">2930</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="29" name="parent_id" />
     </record>
@@ -1464,7 +1464,7 @@
       <field name="name">Feriepenger</field>
       <field name="code">2940</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="29" name="parent_id" />
     </record>
@@ -1473,7 +1473,7 @@
       <field name="name">Påløpte renter</field>
       <field name="code">2950</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="29" name="parent_id" />
     </record>
@@ -1482,7 +1482,7 @@
       <field name="name">Påløpt kostnad og forskuddsbetalt inntekt</field>
       <field name="code">2960</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="29" name="parent_id" />
     </record>
@@ -1491,7 +1491,7 @@
       <field name="name">Uopptjent inntekt</field>
       <field name="code">2970</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="29" name="parent_id" />
     </record>
@@ -1500,7 +1500,7 @@
       <field name="name">Avsetninger og forpliktelser</field>
       <field name="code">2980</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_liability"/>
+      <field name="user_type" ref="account.data_account_type_liability"/>
       <field name="type">other</field>
       <field ref="29" name="parent_id" />
     </record>
@@ -1511,7 +1511,7 @@
       <field name="name">SALGS- OG DRIFTSINNTEKT</field>
       <field name="code">3</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field name="parent_id" ref="0"/>
     </record>
@@ -1520,7 +1520,7 @@
       <field name="name">Salgsinntekt</field>
       <field name="code">30</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="3" name="parent_id" />
     </record>
@@ -1529,7 +1529,7 @@
       <field name="name">Salgsinntekt handelsvarer avgiftspl. høy sats</field>
       <field name="code">3000</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="30" name="parent_id" />
     </record>
@@ -1538,7 +1538,7 @@
       <field name="name">Salgsinntekt egentilv. varer avgiftspl. høy sats</field>
       <field name="code">3010</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="30" name="parent_id" />
     </record>
@@ -1547,7 +1547,7 @@
       <field name="name">Salgsinntekt tjenester avgiftspl. høy sats</field>
       <field name="code">3020</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="30" name="parent_id" />
     </record>
@@ -1556,7 +1556,7 @@
       <field name="name">Salgsinntekt handelsvarer avgiftpl. middels sats</field>
       <field name="code">3030</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="30" name="parent_id" />
     </record>
@@ -1565,7 +1565,7 @@
       <field name="name">Salgsinntekt egentilv. varer avgiftpl middels sats</field>
       <field name="code">3040</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="30" name="parent_id" />
     </record>
@@ -1574,7 +1574,7 @@
       <field name="name">Salgsinntekter tjenester avgiftspl. lav sats</field>
       <field name="code">3050</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="30" name="parent_id" />
     </record>
@@ -1583,7 +1583,7 @@
       <field name="name">Uttak av varer avgiftspliktig høy sats</field>
       <field name="code">3060</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="30" name="parent_id" />
     </record>
@@ -1592,7 +1592,7 @@
       <field name="name">Uttak av varer avgiftspliktig middels sats</field>
       <field name="code">3063</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="30" name="parent_id" />
     </record>
@@ -1601,7 +1601,7 @@
       <field name="name">Uttak av tjenester avgiftspliktig høy sats</field>
       <field name="code">3070</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="30" name="parent_id" />
     </record>
@@ -1610,7 +1610,7 @@
       <field name="name">Uttak av tjenester avgiftspliktig lav sats</field>
       <field name="code">3074</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="30" name="parent_id" />
     </record>
@@ -1619,7 +1619,7 @@
       <field name="name">Rabatter og annen salgsinntektsred.</field>
       <field name="code">3080</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="30" name="parent_id" />
     </record>
@@ -1628,7 +1628,7 @@
       <field name="name">Refunderbare utlegg for kjøpers regning</field>
       <field name="code">3090</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="30" name="parent_id" />
     </record>
@@ -1637,7 +1637,7 @@
       <field name="name">Salgsinntekt</field>
       <field name="code">31</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="3" name="parent_id" />
     </record>
@@ -1646,7 +1646,7 @@
       <field name="name">Salgsinntekt handelsvarer avgiftsfri</field>
       <field name="code">3100</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="31" name="parent_id" />
     </record>
@@ -1655,7 +1655,7 @@
       <field name="name">Salgsinntekt egentilvirkede varer avgiftsfri</field>
       <field name="code">3110</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="31" name="parent_id" />
     </record>
@@ -1664,7 +1664,7 @@
       <field name="name">Salgsinntekt tjenester avgiftsfri</field>
       <field name="code">3120</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="31" name="parent_id" />
     </record>
@@ -1673,7 +1673,7 @@
       <field name="name">Uttak av varer avgiftsfritt</field>
       <field name="code">3160</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="31" name="parent_id" />
     </record>
@@ -1682,7 +1682,7 @@
       <field name="name">Rabatter og annen salgsinntektreduksjon avgiftsfri</field>
       <field name="code">3180</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="31" name="parent_id" />
     </record>
@@ -1691,7 +1691,7 @@
       <field name="name">Refunderbare utlegg for kjøpers regning</field>
       <field name="code">3190</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="31" name="parent_id" />
     </record>
@@ -1700,7 +1700,7 @@
       <field name="name">Salgsinntekt</field>
       <field name="code">32</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="3" name="parent_id" />
     </record>
@@ -1709,7 +1709,7 @@
       <field name="name">Salgsinntekt handelsvarervarer utenfor avg.omr</field>
       <field name="code">3200</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="32" name="parent_id" />
     </record>
@@ -1718,7 +1718,7 @@
       <field name="name">Salgsinntekt egentilvirkede varer utenfor avg.omr</field>
       <field name="code">3210</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="32" name="parent_id" />
     </record>
@@ -1727,7 +1727,7 @@
       <field name="name">Salgsinntekt tjenester utenfor avg.omr</field>
       <field name="code">3220</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="32" name="parent_id" />
     </record>
@@ -1736,7 +1736,7 @@
       <field name="name">Uttak av varer utenfor avgiftsområdet</field>
       <field name="code">3260</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="32" name="parent_id" />
     </record>
@@ -1745,7 +1745,7 @@
       <field name="name">Rabatter og annen salgsinntektsreduksjon</field>
       <field name="code">3280</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="32" name="parent_id" />
     </record>
@@ -1754,7 +1754,7 @@
       <field name="name">Offentlig avgift vedr. omsetning</field>
       <field name="code">33</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="3" name="parent_id" />
     </record>
@@ -1763,7 +1763,7 @@
       <field name="name">Spesiell off. avg. tilv./solgte varer avgiftspl.</field>
       <field name="code">3300</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="33" name="parent_id" />
     </record>
@@ -1772,7 +1772,7 @@
       <field name="name">Spesiell off. avg. tilv./solgte varer fritt</field>
       <field name="code">3301</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="33" name="parent_id" />
     </record>
@@ -1781,7 +1781,7 @@
       <field name="name">Miljø avgift for tilv./solgte varer avgiftspliktig</field>
       <field name="code">3302</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="33" name="parent_id" />
     </record>
@@ -1790,7 +1790,7 @@
       <field name="name">Miljø avgift for tilv./solgte varer avgiftsfritt</field>
       <field name="code">3303</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="33" name="parent_id" />
     </record>
@@ -1799,7 +1799,7 @@
       <field name="name">Offentlig tilskudd/refusjon</field>
       <field name="code">34</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="3" name="parent_id" />
     </record>
@@ -1808,7 +1808,7 @@
       <field name="name">Spesielt offentlig tilskudd for tilv./solgte varer</field>
       <field name="code">3400</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="34" name="parent_id" />
     </record>
@@ -1817,7 +1817,7 @@
       <field name="name">Spesielt offentlig tilskudd for tjeneste</field>
       <field name="code">3440</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="34" name="parent_id" />
     </record>
@@ -1826,7 +1826,7 @@
       <field name="name">Uopptjent inntekt</field>
       <field name="code">35</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="3" name="parent_id" />
     </record>
@@ -1835,7 +1835,7 @@
       <field name="name">Garanti</field>
       <field name="code">3500</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="35" name="parent_id" />
     </record>
@@ -1844,7 +1844,7 @@
       <field name="name">Service</field>
       <field name="code">3510</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="35" name="parent_id" />
     </record>
@@ -1853,7 +1853,7 @@
       <field name="name">Leieinntekt</field>
       <field name="code">36</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="3" name="parent_id" />
     </record>
@@ -1862,7 +1862,7 @@
       <field name="name">Leieinntekt fast eiendom</field>
       <field name="code">3600</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="36" name="parent_id" />
     </record>
@@ -1871,7 +1871,7 @@
       <field name="name">Leieinntekt andre varige driftsmidler</field>
       <field name="code">3610</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="36" name="parent_id" />
     </record>
@@ -1880,7 +1880,7 @@
       <field name="name">Annen leieinntekt</field>
       <field name="code">3620</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="36" name="parent_id" />
     </record>
@@ -1889,7 +1889,7 @@
       <field name="name">Provisjonsinntekt</field>
       <field name="code">37</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="3" name="parent_id" />
     </record>
@@ -1898,7 +1898,7 @@
       <field name="name">Provisjonsinntekt</field>
       <field name="code">3700</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="37" name="parent_id" />
     </record>
@@ -1907,7 +1907,7 @@
       <field name="name">Gevinst ved avgang av anleggsmidler</field>
       <field name="code">38</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="3" name="parent_id" />
     </record>
@@ -1916,7 +1916,7 @@
       <field name="name">Gevinst ved avgang av anleggsmidler</field>
       <field name="code">3800</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="38" name="parent_id" />
     </record>
@@ -1925,7 +1925,7 @@
       <field name="name">Annen driftsrelatert inntekt</field>
       <field name="code">39</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="3" name="parent_id" />
     </record>
@@ -1934,7 +1934,7 @@
       <field name="name">Annen driftsrelatert inntekt</field>
       <field name="code">3900</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="39" name="parent_id" />
     </record>
@@ -1943,7 +1943,7 @@
       <field name="name">Utgående porto</field>
       <field name="code">3910</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="39" name="parent_id" />
     </record>
@@ -1952,7 +1952,7 @@
       <field name="name">Utgående gebyrer</field>
       <field name="code">3920</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="39" name="parent_id" />
     </record>
@@ -1961,7 +1961,7 @@
       <field name="name">Annen driftsrelatert inntekt</field>
       <field name="code">3950</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="39" name="parent_id" />
     </record>
@@ -1970,7 +1970,7 @@
       <field name="name">Utgående porto</field>
       <field name="code">3960</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="39" name="parent_id" />
     </record>
@@ -1979,7 +1979,7 @@
       <field name="name">Utgående gebyrer</field>
       <field name="code">3970</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="39" name="parent_id" />
     </record>
@@ -1988,7 +1988,7 @@
       <field name="name">VAREKOSTNAD</field>
       <field name="code">4</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field name="parent_id" ref="0"/>
     </record>
@@ -1997,7 +1997,7 @@
       <field name="name">Forbruk av råvarer og innkjøpte halvfabrikater</field>
       <field name="code">40</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="4" name="parent_id" />
     </record>
@@ -2006,7 +2006,7 @@
       <field name="name">Innkjøp av råvarer og halvfabrikata høy sats</field>
       <field name="code">4000</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="40" name="parent_id" />
     </record>
@@ -2015,7 +2015,7 @@
       <field name="name">Innkjøp av råvarer og halvfabrikata middels sats</field>
       <field name="code">4030</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="40" name="parent_id" />
     </record>
@@ -2024,7 +2024,7 @@
       <field name="name">Frakt</field>
       <field name="code">4060</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="40" name="parent_id" />
     </record>
@@ -2033,7 +2033,7 @@
       <field name="name">Innkjøpsprisreduksjon</field>
       <field name="code">4070</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="40" name="parent_id" />
     </record>
@@ -2042,7 +2042,7 @@
       <field name="name">Beholdningsendring</field>
       <field name="code">4090</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="40" name="parent_id" />
     </record>
@@ -2051,7 +2051,7 @@
       <field name="name">Forbruk av varer under tilvirkning</field>
       <field name="code">41</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="4" name="parent_id" />
     </record>
@@ -2060,7 +2060,7 @@
       <field name="name">Innkjøp varer under tilvirkning høy sats</field>
       <field name="code">4100</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="41" name="parent_id" />
     </record>
@@ -2069,7 +2069,7 @@
       <field name="name">Innkjøp varer under tilvirkning middels sats</field>
       <field name="code">4130</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="41" name="parent_id" />
     </record>
@@ -2078,7 +2078,7 @@
       <field name="name">Frakt</field>
       <field name="code">4160</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="41" name="parent_id" />
     </record>
@@ -2087,7 +2087,7 @@
       <field name="name">Innkjøpsprisreduksjon</field>
       <field name="code">4170</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="41" name="parent_id" />
     </record>
@@ -2096,7 +2096,7 @@
       <field name="name">Beholdningsendring</field>
       <field name="code">4190</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="41" name="parent_id" />
     </record>
@@ -2105,7 +2105,7 @@
       <field name="name">Forbruk av ferdig tilvirkede varer</field>
       <field name="code">42</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="4" name="parent_id" />
     </record>
@@ -2114,7 +2114,7 @@
       <field name="name">Innkjøp ferdig egentilvirkede varer høy sats</field>
       <field name="code">4200</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="42" name="parent_id" />
     </record>
@@ -2123,7 +2123,7 @@
       <field name="name">Innkjøp ferdig egentilvirkede varer middels sats</field>
       <field name="code">4230</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="42" name="parent_id" />
     </record>
@@ -2132,7 +2132,7 @@
       <field name="name">Frakt</field>
       <field name="code">4260</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="42" name="parent_id" />
     </record>
@@ -2141,7 +2141,7 @@
       <field name="name">Innkjøpsprisreduksjon</field>
       <field name="code">4270</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="42" name="parent_id" />
     </record>
@@ -2150,7 +2150,7 @@
       <field name="name">Beholdningsendring</field>
       <field name="code">4290</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="42" name="parent_id" />
     </record>
@@ -2159,7 +2159,7 @@
       <field name="name">Forbruk av innkjøpte varer for videresalg</field>
       <field name="code">43</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="4" name="parent_id" />
     </record>
@@ -2168,7 +2168,7 @@
       <field name="name">Innkjøp varer for videresalg høy sats</field>
       <field name="code">4300</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="43" name="parent_id" />
     </record>
@@ -2177,7 +2177,7 @@
       <field name="name">Innkjøp varer for videresalg middels sats</field>
       <field name="code">4330</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="43" name="parent_id" />
     </record>
@@ -2186,7 +2186,7 @@
       <field name="name">Frakt</field>
       <field name="code">4360</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="43" name="parent_id" />
     </record>
@@ -2195,7 +2195,7 @@
       <field name="name">Innkjøpsprisreduksjon</field>
       <field name="code">4370</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="43" name="parent_id" />
     </record>
@@ -2204,7 +2204,7 @@
       <field name="name">Beholdningsendring</field>
       <field name="code">4390</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="43" name="parent_id" />
     </record>
@@ -2213,7 +2213,7 @@
       <field name="name">Fremmedytelse og underentreprise</field>
       <field name="code">45</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="4" name="parent_id" />
     </record>
@@ -2222,7 +2222,7 @@
       <field name="name">Fremmedytelser og underentreprise</field>
       <field name="code">4500</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="45" name="parent_id" />
     </record>
@@ -2231,7 +2231,7 @@
       <field name="name">Beholdningsendring</field>
       <field name="code">4590</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="45" name="parent_id" />
     </record>
@@ -2240,7 +2240,7 @@
       <field name="name">Annen periodisering</field>
       <field name="code">49</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="4" name="parent_id" />
     </record>
@@ -2249,7 +2249,7 @@
       <field name="name">Annen periodisering</field>
       <field name="code">4900</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="49" name="parent_id" />
     </record>
@@ -2258,7 +2258,7 @@
       <field name="name">Beholdningsendring</field>
       <field name="code">4990</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="49" name="parent_id" />
     </record>
@@ -2267,7 +2267,7 @@
       <field name="name">LØNNSKOSTNAD</field>
       <field name="code">5</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field name="parent_id" ref="0"/>
     </record>
@@ -2276,7 +2276,7 @@
       <field name="name">Lønn til ansatte</field>
       <field name="code">50</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="5" name="parent_id" />
     </record>
@@ -2285,7 +2285,7 @@
       <field name="name">Lønn til ansatte</field>
       <field name="code">5000</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="50" name="parent_id" />
     </record>
@@ -2294,7 +2294,7 @@
       <field name="name">Periodiseringskonto lønn</field>
       <field name="code">5090</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="50" name="parent_id" />
     </record>
@@ -2303,7 +2303,7 @@
       <field name="name">Feriepenger beregnet</field>
       <field name="code">5180</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="50" name="parent_id" />
     </record>
@@ -2312,7 +2312,7 @@
       <field name="name">Arbeidsgiveravgift påløpte feriepenger</field>
       <field name="code">5182</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="50" name="parent_id" />
     </record>
@@ -2321,7 +2321,7 @@
       <field name="name">Fordel i arbeidsforhold</field>
       <field name="code">52</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="5" name="parent_id" />
     </record>
@@ -2330,7 +2330,7 @@
       <field name="name">Fri bil</field>
       <field name="code">5200</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="52" name="parent_id" />
     </record>
@@ -2339,7 +2339,7 @@
       <field name="name">Fri telefon</field>
       <field name="code">5210</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="52" name="parent_id" />
     </record>
@@ -2348,7 +2348,7 @@
       <field name="name">Fri avis</field>
       <field name="code">5220</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="52" name="parent_id" />
     </record>
@@ -2357,7 +2357,7 @@
       <field name="name">Fri losji og bolig</field>
       <field name="code">5230</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="52" name="parent_id" />
     </record>
@@ -2366,7 +2366,7 @@
       <field name="name">Rentefordel</field>
       <field name="code">5240</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="52" name="parent_id" />
     </record>
@@ -2375,7 +2375,7 @@
       <field name="name">Annen fordel i arbeidsforhold</field>
       <field name="code">5280</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="52" name="parent_id" />
     </record>
@@ -2384,7 +2384,7 @@
       <field name="name">Motkonto for gruppe 52</field>
       <field name="code">5290</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="52" name="parent_id" />
     </record>
@@ -2393,7 +2393,7 @@
       <field name="name">Annen oppgavepliktig godtgjørelse</field>
       <field name="code">53</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="5" name="parent_id" />
     </record>
@@ -2402,7 +2402,7 @@
       <field name="name">Tantieme</field>
       <field name="code">5300</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="53" name="parent_id" />
     </record>
@@ -2411,7 +2411,7 @@
       <field name="name">Godtgjørelse til styre- og bedriftsforsamling</field>
       <field name="code">5330</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="53" name="parent_id" />
     </record>
@@ -2420,7 +2420,7 @@
       <field name="name">Arbeidsgiveravgift og pensjonskostnad</field>
       <field name="code">54</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="5" name="parent_id" />
     </record>
@@ -2429,7 +2429,7 @@
       <field name="name">Arbeidsgiveravgift</field>
       <field name="code">5400</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="54" name="parent_id" />
     </record>
@@ -2438,7 +2438,7 @@
       <field name="name">Innberetningspliktig pensjonskostnad</field>
       <field name="code">5420</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="54" name="parent_id" />
     </record>
@@ -2447,7 +2447,7 @@
       <field name="name">Annen kostnadsgodtgjørelse</field>
       <field name="code">55</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="5" name="parent_id" />
     </record>
@@ -2456,7 +2456,7 @@
       <field name="name">Annen kostnadsgodtgjørelse</field>
       <field name="code">5500</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="55" name="parent_id" />
     </record>
@@ -2465,7 +2465,7 @@
       <field name="name">Arbeidsgodtgjørelse til eiere o.l.</field>
       <field name="code">56</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="5" name="parent_id" />
     </record>
@@ -2474,7 +2474,7 @@
       <field name="name">Arbeidsgodtgjørelse til eiere i ANS o l</field>
       <field name="code">5600</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="56" name="parent_id" />
     </record>
@@ -2483,7 +2483,7 @@
       <field name="name">Offentlig tilskudd vedr. arbeidskraft</field>
       <field name="code">57</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="5" name="parent_id" />
     </record>
@@ -2492,7 +2492,7 @@
       <field name="name">Lærlingtilskudd</field>
       <field name="code">5700</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="57" name="parent_id" />
     </record>
@@ -2501,7 +2501,7 @@
       <field name="name">Offentlig refusjon vedr. arbeidskraft</field>
       <field name="code">58</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="5" name="parent_id" />
     </record>
@@ -2510,7 +2510,7 @@
       <field name="name">Refusjon av sykepenger</field>
       <field name="code">5800</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="58" name="parent_id" />
     </record>
@@ -2519,7 +2519,7 @@
       <field name="name">Refusjon av arbeidsgiveravgift</field>
       <field name="code">5820</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="58" name="parent_id" />
     </record>
@@ -2528,7 +2528,7 @@
       <field name="name">Annen personalkostnad</field>
       <field name="code">59</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="5" name="parent_id" />
     </record>
@@ -2537,7 +2537,7 @@
       <field name="name">Gaver til ansatte</field>
       <field name="code">5900</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="59" name="parent_id" />
     </record>
@@ -2546,7 +2546,7 @@
       <field name="name">Kantinekostnader</field>
       <field name="code">5910</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="59" name="parent_id" />
     </record>
@@ -2555,7 +2555,7 @@
       <field name="name">Yrkesskadeforsikring</field>
       <field name="code">5920</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="59" name="parent_id" />
     </record>
@@ -2564,7 +2564,7 @@
       <field name="name">Andre forsikringer</field>
       <field name="code">5930</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>    
+      <field name="user_type" ref="account.data_account_type_expense"/>    
       <field name="type">other</field>
       <field ref="59" name="parent_id" />
     </record>
@@ -2573,7 +2573,7 @@
       <field name="name">ANNEN DRIFTSKOSTNAD</field>
       <field name="code">6</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field name="parent_id" ref="0"/>
     </record>
@@ -2582,7 +2582,7 @@
       <field name="name">Av- og nedskrivning</field>
       <field name="code">60</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="6" name="parent_id" />
     </record>
@@ -2591,7 +2591,7 @@
       <field name="name">Avskrivning på bygninger og annen fast eiendom</field>
       <field name="code">6000</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="60" name="parent_id" />
     </record>
@@ -2600,7 +2600,7 @@
       <field name="name">Avskrivning på transportmidler</field>
       <field name="code">6010</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="60" name="parent_id" />
     </record>
@@ -2609,7 +2609,7 @@
       <field name="name">Avskrivning på immatrielle eiendeler</field>
       <field name="code">6020</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="60" name="parent_id" />
     </record>
@@ -2618,7 +2618,7 @@
       <field name="name">Nedskrivning av varige driftsmidler</field>
       <field name="code">6050</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="60" name="parent_id" />
     </record>
@@ -2627,7 +2627,7 @@
       <field name="name">Frakt og transportkostnad vedrørende salg</field>
       <field name="code">61</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="6" name="parent_id" />
     </record>
@@ -2636,7 +2636,7 @@
       <field name="name">Frakt</field>
       <field name="code">6100</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="61" name="parent_id" />
     </record>
@@ -2645,7 +2645,7 @@
       <field name="name">Toll og spedisjonskostnad</field>
       <field name="code">6110</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="61" name="parent_id" />
     </record>
@@ -2654,7 +2654,7 @@
       <field name="name">Energi</field>
       <field name="code">62</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="6" name="parent_id" />
     </record>
@@ -2663,7 +2663,7 @@
       <field name="name">Elektrisitet</field>
       <field name="code">6200</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="62" name="parent_id" />
     </record>
@@ -2672,7 +2672,7 @@
       <field name="name">Gass</field>
       <field name="code">6210</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="62" name="parent_id" />
     </record>
@@ -2681,7 +2681,7 @@
       <field name="name">Fyringsolje</field>
       <field name="code">6220</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="62" name="parent_id" />
     </record>
@@ -2690,7 +2690,7 @@
       <field name="name">Kull</field>
       <field name="code">6230</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="62" name="parent_id" />
     </record>
@@ -2699,7 +2699,7 @@
       <field name="name">Ved</field>
       <field name="code">6240</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="62" name="parent_id" />
     </record>
@@ -2708,7 +2708,7 @@
       <field name="name">Bensin</field>
       <field name="code">6250</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="62" name="parent_id" />
     </record>
@@ -2717,7 +2717,7 @@
       <field name="name">Vann</field>
       <field name="code">6260</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="62" name="parent_id" />
     </record>
@@ -2726,7 +2726,7 @@
       <field name="name">Kostnad lokaler</field>
       <field name="code">63</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="6" name="parent_id" />
     </record>
@@ -2735,7 +2735,7 @@
       <field name="name">Leie lokaler</field>
       <field name="code">6300</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="63" name="parent_id" />
     </record>
@@ -2744,7 +2744,7 @@
       <field name="name">Renovasjon</field>
       <field name="code">6320</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="63" name="parent_id" />
     </record>
@@ -2753,7 +2753,7 @@
       <field name="name">Lys</field>
       <field name="code">6340</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="63" name="parent_id" />
     </record>
@@ -2762,7 +2762,7 @@
       <field name="name">Renhold</field>
       <field name="code">6360</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="63" name="parent_id" />
     </record>
@@ -2771,7 +2771,7 @@
       <field name="name">Leie maskiner</field>
       <field name="code">64</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="6" name="parent_id" />
     </record>
@@ -2780,7 +2780,7 @@
       <field name="name">Leie maskiner</field>
       <field name="code">6400</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="64" name="parent_id" />
     </record>
@@ -2789,7 +2789,7 @@
       <field name="name">Leie inventar</field>
       <field name="code">6410</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="64" name="parent_id" />
     </record>
@@ -2798,7 +2798,7 @@
       <field name="name">Leie datasystemer</field>
       <field name="code">6420</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="64" name="parent_id" />
     </record>
@@ -2807,7 +2807,7 @@
       <field name="name">Leie andre kontormaskiner</field>
       <field name="code">6430</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="64" name="parent_id" />
     </record>
@@ -2816,7 +2816,7 @@
       <field name="name">Leie transportmidler</field>
       <field name="code">6440</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="64" name="parent_id" />
     </record>
@@ -2825,7 +2825,7 @@
       <field name="name">Verktøy</field>
       <field name="code">65</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="6" name="parent_id" />
     </record>
@@ -2834,7 +2834,7 @@
       <field name="name">Motordrevet verktøy</field>
       <field name="code">6500</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="65" name="parent_id" />
     </record>
@@ -2843,7 +2843,7 @@
       <field name="name">Håndverktøy</field>
       <field name="code">6510</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="65" name="parent_id" />
     </record>
@@ -2852,7 +2852,7 @@
       <field name="name">Hjelpeverktøy</field>
       <field name="code">6520</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="65" name="parent_id" />
     </record>
@@ -2861,7 +2861,7 @@
       <field name="name">Spesialverktøy</field>
       <field name="code">6530</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="65" name="parent_id" />
     </record>
@@ -2870,7 +2870,7 @@
       <field name="name">Inventar</field>
       <field name="code">6540</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="65" name="parent_id" />
     </record>
@@ -2879,7 +2879,7 @@
       <field name="name">Driftsmateriale</field>
       <field name="code">6550</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="65" name="parent_id" />
     </record>
@@ -2888,7 +2888,7 @@
       <field name="name">Rekvisita</field>
       <field name="code">6560</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="65" name="parent_id" />
     </record>
@@ -2897,7 +2897,7 @@
       <field name="name">Arbeidsklær og verneutstyr</field>
       <field name="code">6570</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="65" name="parent_id" />
     </record>
@@ -2906,7 +2906,7 @@
       <field name="name">Reparasjon og vedlikehold</field>
       <field name="code">66</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="6" name="parent_id" />
     </record>
@@ -2915,7 +2915,7 @@
       <field name="name">Reparasjon og vedlikehold bygninger</field>
       <field name="code">6600</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="66" name="parent_id" />
     </record>
@@ -2924,7 +2924,7 @@
       <field name="name">Reparasjon og vedlikehold utstyr</field>
       <field name="code">6620</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="66" name="parent_id" />
     </record>
@@ -2933,7 +2933,7 @@
       <field name="name">Fremmed tjeneste</field>
       <field name="code">67</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="6" name="parent_id" />
     </record>
@@ -2942,7 +2942,7 @@
       <field name="name">Revisjons- og regnskapshonorarer</field>
       <field name="code">6700</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="67" name="parent_id" />
     </record>
@@ -2951,7 +2951,7 @@
       <field name="name">Honorarer for økonomisk og juridisk bistand</field>
       <field name="code">6720</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="67" name="parent_id" />
     </record>
@@ -2960,7 +2960,7 @@
       <field name="name">Kontorkostnad</field>
       <field name="code">68</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="6" name="parent_id" />
     </record>
@@ -2969,7 +2969,7 @@
       <field name="name">Kontorrekvisita</field>
       <field name="code">6800</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="68" name="parent_id" />
     </record>
@@ -2978,7 +2978,7 @@
       <field name="name">Trykksaker</field>
       <field name="code">6820</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="68" name="parent_id" />
     </record>
@@ -2987,7 +2987,7 @@
       <field name="name">Aviser og tidsskrifter</field>
       <field name="code">6840</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="68" name="parent_id" />
     </record>
@@ -2996,7 +2996,7 @@
       <field name="name">Møte</field>
       <field name="code">6860</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="68" name="parent_id" />
     </record>
@@ -3005,7 +3005,7 @@
       <field name="name">Telefon</field>
       <field name="code">69</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="6" name="parent_id" />
     </record>
@@ -3014,7 +3014,7 @@
       <field name="name">Telefon</field>
       <field name="code">6900</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="69" name="parent_id" />
     </record>
@@ -3023,7 +3023,7 @@
       <field name="name">Porto</field>
       <field name="code">6940</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="69" name="parent_id" />
     </record>
@@ -3032,7 +3032,7 @@
       <field name="name">ANNEN DRIFTSKOSTNAD</field>
       <field name="code">7</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field name="parent_id" ref="0"/>
     </record>
@@ -3041,7 +3041,7 @@
       <field name="name">Kostnad transportmidler</field>
       <field name="code">70</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="7" name="parent_id" />
     </record>
@@ -3050,7 +3050,7 @@
       <field name="name">Drivstoff</field>
       <field name="code">7000</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="70" name="parent_id" />
     </record>
@@ -3059,7 +3059,7 @@
       <field name="name">Vedlikehold</field>
       <field name="code">7020</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="70" name="parent_id" />
     </record>
@@ -3068,7 +3068,7 @@
       <field name="name">Forsikringer</field>
       <field name="code">7040</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="70" name="parent_id" />
     </record>
@@ -3077,7 +3077,7 @@
       <field name="name">Kostnad og godtgj. for reiser</field>
       <field name="code">71</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="7" name="parent_id" />
     </record>
@@ -3086,7 +3086,7 @@
       <field name="name">Bilgodtgjørelse</field>
       <field name="code">7100</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="71" name="parent_id" />
     </record>
@@ -3095,7 +3095,7 @@
       <field name="name">Reisekostnad</field>
       <field name="code">7130</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="71" name="parent_id" />
     </record>
@@ -3104,7 +3104,7 @@
       <field name="name">Reisekostnad</field>
       <field name="code">7140</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="71" name="parent_id" />
     </record>
@@ -3113,7 +3113,7 @@
       <field name="name">Diettkostnader</field>
       <field name="code">7150</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="71" name="parent_id" />
     </record>
@@ -3122,7 +3122,7 @@
       <field name="name">Diettkostnader</field>
       <field name="code">7160</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="71" name="parent_id" />
     </record>
@@ -3131,7 +3131,7 @@
       <field name="name">Provisjonskostnad</field>
       <field name="code">72</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="7" name="parent_id" />
     </record>
@@ -3140,7 +3140,7 @@
       <field name="name">Provisjonskostnader</field>
       <field name="code">7200</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="72" name="parent_id" />
     </record>
@@ -3149,7 +3149,7 @@
       <field name="name">Provisjonskostnader</field>
       <field name="code">7210</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="72" name="parent_id" />
     </record>
@@ -3158,7 +3158,7 @@
       <field name="name">Salgs-</field>
       <field name="code">73</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="7" name="parent_id" />
     </record>
@@ -3167,7 +3167,7 @@
       <field name="name">Salgskostnad</field>
       <field name="code">7300</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="73" name="parent_id" />
     </record>
@@ -3176,7 +3176,7 @@
       <field name="name">Reklamekostnad</field>
       <field name="code">7320</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="73" name="parent_id" />
     </record>
@@ -3185,7 +3185,7 @@
       <field name="name">Representasjon</field>
       <field name="code">7350</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="73" name="parent_id" />
     </record>
@@ -3194,7 +3194,7 @@
       <field name="name">Representasjon</field>
       <field name="code">7360</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="73" name="parent_id" />
     </record>
@@ -3203,7 +3203,7 @@
       <field name="name">Kontingent og gave</field>
       <field name="code">74</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="7" name="parent_id" />
     </record>
@@ -3212,7 +3212,7 @@
       <field name="name">Kontingenter</field>
       <field name="code">7400</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="74" name="parent_id" />
     </record>
@@ -3221,7 +3221,7 @@
       <field name="name">Kontingenter</field>
       <field name="code">7410</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="74" name="parent_id" />
     </record>
@@ -3230,7 +3230,7 @@
       <field name="name">Gaver</field>
       <field name="code">7420</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="74" name="parent_id" />
     </record>
@@ -3239,7 +3239,7 @@
       <field name="name">Gaver</field>
       <field name="code">7430</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="74" name="parent_id" />
     </record>
@@ -3248,7 +3248,7 @@
       <field name="name">Forsikringspremie</field>
       <field name="code">75</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="7" name="parent_id" />
     </record>
@@ -3257,7 +3257,7 @@
       <field name="name">Forsikringspremie</field>
       <field name="code">7500</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="75" name="parent_id" />
     </record>
@@ -3266,7 +3266,7 @@
       <field name="name">Garantikostnad</field>
       <field name="code">7550</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="75" name="parent_id" />
     </record>
@@ -3275,7 +3275,7 @@
       <field name="name">Servicekostnad</field>
       <field name="code">7560</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="75" name="parent_id" />
     </record>
@@ -3284,7 +3284,7 @@
       <field name="name">Lisens- og patentkostnad</field>
       <field name="code">76</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="7" name="parent_id" />
     </record>
@@ -3293,7 +3293,7 @@
       <field name="name">Lisensavgifter og royalties</field>
       <field name="code">7600</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="76" name="parent_id" />
     </record>
@@ -3302,7 +3302,7 @@
       <field name="name">Patentkostnad ved egen patent</field>
       <field name="code">7610</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="76" name="parent_id" />
     </record>
@@ -3311,7 +3311,7 @@
       <field name="name">Kostnader ved varemerker o l</field>
       <field name="code">7620</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="76" name="parent_id" />
     </record>
@@ -3320,7 +3320,7 @@
       <field name="name">Kontroll-</field>
       <field name="code">7630</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="76" name="parent_id" />
     </record>
@@ -3329,7 +3329,7 @@
       <field name="name">Annen kostnad</field>
       <field name="code">77</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="7" name="parent_id" />
     </record>
@@ -3338,7 +3338,7 @@
       <field name="name">Styre- og bedriftsforsamlingsmøter</field>
       <field name="code">7700</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="77" name="parent_id" />
     </record>
@@ -3347,7 +3347,7 @@
       <field name="name">Generalforsamling</field>
       <field name="code">7710</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="77" name="parent_id" />
     </record>
@@ -3356,7 +3356,7 @@
       <field name="name">Kostnader ved egne aksjer</field>
       <field name="code">7730</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="77" name="parent_id" />
     </record>
@@ -3365,7 +3365,7 @@
       <field name="name">Øreavrunding</field>
       <field name="code">7740</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="77" name="parent_id" />
     </record>
@@ -3374,7 +3374,7 @@
       <field name="name">Øreavrunding</field>
       <field name="code">7745</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="77" name="parent_id" />
     </record>
@@ -3383,7 +3383,7 @@
       <field name="name">Øreavrunding</field>
       <field name="code">7746</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="77" name="parent_id" />
     </record>
@@ -3392,7 +3392,7 @@
       <field name="name">Eiendoms- og festeavgifter</field>
       <field name="code">7750</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="77" name="parent_id" />
     </record>
@@ -3401,7 +3401,7 @@
       <field name="name">Bank og kortgebyrer</field>
       <field name="code">7770</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="77" name="parent_id" />
     </record>
@@ -3410,7 +3410,7 @@
       <field name="name">Renter og gebyrer inkasso</field>
       <field name="code">7780</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="77" name="parent_id" />
     </record>
@@ -3419,7 +3419,7 @@
       <field name="name">Tap o.l.</field>
       <field name="code">78</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="7" name="parent_id" />
     </record>
@@ -3428,7 +3428,7 @@
       <field name="name">Tap ved avgang driftsmidler</field>
       <field name="code">7800</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="78" name="parent_id" />
     </record>
@@ -3437,7 +3437,7 @@
       <field name="name">Innkommet på tidligere nedskrevne fordringer</field>
       <field name="code">7820</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="78" name="parent_id" />
     </record>
@@ -3446,7 +3446,7 @@
       <field name="name">Tap på fordringer</field>
       <field name="code">7830</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="78" name="parent_id" />
     </record>
@@ -3455,7 +3455,7 @@
       <field name="name">Tap på kontrakter</field>
       <field name="code">7860</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="78" name="parent_id" />
     </record>
@@ -3464,7 +3464,7 @@
       <field name="name">Periodiseringskonto</field>
       <field name="code">79</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="7" name="parent_id" />
     </record>
@@ -3473,7 +3473,7 @@
       <field name="name">Beholdningsendring anlegg under utførelse</field>
       <field name="code">7900</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="79" name="parent_id" />
     </record>
@@ -3482,7 +3482,7 @@
       <field name="name">Ukurante varer</field>
       <field name="code">7910</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="79" name="parent_id" />
     </record>
@@ -3492,7 +3492,7 @@
       <field name="name">FINANSINNTEKT OG -KOSTNAD</field>
       <field name="code">8</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field name="parent_id" ref="0"/>
     </record>
@@ -3502,7 +3502,7 @@
       <field name="name">Finansinntekt</field>
       <field name="code">80</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="8" name="parent_id" />
     </record>
@@ -3511,7 +3511,7 @@
       <field name="name">Inntekt på investering i datterselskap</field>
       <field name="code">8000</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="80" name="parent_id" />
     </record>
@@ -3520,7 +3520,7 @@
       <field name="name">Inntekt på investering i annet foretak. s/ konsern</field>
       <field name="code">8010</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="80" name="parent_id" />
     </record>
@@ -3529,7 +3529,7 @@
       <field name="name">Inntekt på investering i tilknyttet selskap</field>
       <field name="code">8020</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="80" name="parent_id" />
     </record>
@@ -3538,7 +3538,7 @@
       <field name="name">Renteinntekt på foretak i  samme konsern</field>
       <field name="code">8030</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="80" name="parent_id" />
     </record>
@@ -3547,7 +3547,7 @@
       <field name="name">Renteinntekter</field>
       <field name="code">8040</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="80" name="parent_id" />
     </record>
@@ -3556,7 +3556,7 @@
       <field name="name">Annen renteinntekt</field>
       <field name="code">8050</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="80" name="parent_id" />
     </record>
@@ -3565,7 +3565,7 @@
       <field name="name">Valutagevinst (agio)</field>
       <field name="code">8060</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="80" name="parent_id" />
     </record>
@@ -3574,7 +3574,7 @@
       <field name="name">Annen finansinntekt</field>
       <field name="code">8070</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="80" name="parent_id" />
     </record>
@@ -3583,7 +3583,7 @@
       <field name="name">Verdiøkning finansielle omløpsmidler</field>
       <field name="code">8080</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="80" name="parent_id" />
     </record>
@@ -3593,7 +3593,7 @@
       <field name="name">Finanskostnad</field>
       <field name="code">81</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="8" name="parent_id" />
     </record>
@@ -3602,7 +3602,7 @@
       <field name="name">Verdireduksjon finansielle omløpsmidler</field>
       <field name="code">8100</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="81" name="parent_id" />
     </record>
@@ -3611,7 +3611,7 @@
       <field name="name">Nedskrivning finansielle omløpsmidler</field>
       <field name="code">8110</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="81" name="parent_id" />
     </record>
@@ -3620,7 +3620,7 @@
       <field name="name">Nedskrivning finansielle anleggsmidler</field>
       <field name="code">8120</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="81" name="parent_id" />
     </record>
@@ -3629,7 +3629,7 @@
       <field name="name">Rentekostnad foretak i samme konsern</field>
       <field name="code">8130</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="81" name="parent_id" />
     </record>
@@ -3638,7 +3638,7 @@
       <field name="name">Rentekostnad</field>
       <field name="code">8140</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="81" name="parent_id" />
     </record>
@@ -3647,7 +3647,7 @@
       <field name="name">Annen rentekostnad</field>
       <field name="code">8150</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="81" name="parent_id" />
     </record>
@@ -3656,7 +3656,7 @@
       <field name="name">Valutatap (disagio)</field>
       <field name="code">8160</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="81" name="parent_id" />
     </record>
@@ -3665,7 +3665,7 @@
       <field name="name">Annen finanskostnad</field>
       <field name="code">8170</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="81" name="parent_id" />
     </record>
@@ -3675,7 +3675,7 @@
       <field name="name">Skattekostnad på ordinært resultat</field>
       <field name="code">83</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="8" name="parent_id" />
     </record>
@@ -3684,7 +3684,7 @@
       <field name="name">Betalbar skatt</field>
       <field name="code">8300</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="83" name="parent_id" />
     </record>
@@ -3693,7 +3693,7 @@
       <field name="name">Utsatt skatt</field>
       <field name="code">8320</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="83" name="parent_id" />
     </record>
@@ -3703,7 +3703,7 @@
       <field name="name">Ekstraordinær inntekt (spesifisert etter art)</field>
       <field name="code">84</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="8" name="parent_id" />
     </record>
@@ -3712,7 +3712,7 @@
       <field name="name">Ekstraordinær inntekt</field>
       <field name="code">8400</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="84" name="parent_id" />
     </record>
@@ -3722,7 +3722,7 @@
       <field name="name">Ekstraordinær kostnad (spesifisert etter art)</field>
       <field name="code">85</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="8" name="parent_id" />
     </record>
@@ -3731,7 +3731,7 @@
       <field name="name">Ekstraordinær kostnad</field>
       <field name="code">8500</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="85" name="parent_id" />
     </record>
@@ -3741,7 +3741,7 @@
       <field name="name">Skattekostnad på ekstraordinært resultat</field>
       <field name="code">86</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="8" name="parent_id" />
     </record>
@@ -3750,7 +3750,7 @@
       <field name="name">Betalbar skatt</field>
       <field name="code">8600</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="86" name="parent_id" />
     </record>
@@ -3759,7 +3759,7 @@
       <field name="name">Utsatt skatt</field>
       <field name="code">8620</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="86" name="parent_id" />
     </record>
@@ -3769,7 +3769,7 @@
       <field name="name">Årsresultat</field>
       <field name="code">88</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="8" name="parent_id" />
     </record>
@@ -3778,7 +3778,7 @@
       <field name="name">Årsresultat</field>
       <field name="code">8800</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_income"/>
+      <field name="user_type" ref="account.data_account_type_income"/>
       <field name="type">other</field>
       <field ref="88" name="parent_id" />
     </record>
@@ -3788,7 +3788,7 @@
       <field name="name">Overføringer og disponeringer</field>
       <field name="code">89</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_view"/>
+      <field name="user_type" ref="account.data_account_type_view"/>
       <field name="type">view</field>
       <field ref="8" name="parent_id" />
     </record>
@@ -3797,7 +3797,7 @@
       <field name="name">Overføringsfond vurderingsforskjeller</field>
       <field name="code">8900</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="89" name="parent_id" />
     </record>
@@ -3806,7 +3806,7 @@
       <field name="name">Overføringsfond felleseid kapital samme foretak.</field>
       <field name="code">8910</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="89" name="parent_id" />
     </record>
@@ -3815,7 +3815,7 @@
       <field name="name">Avsatt utbytte/renter grunnfondsbevis</field>
       <field name="code">8920</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="89" name="parent_id" />
     </record>
@@ -3824,7 +3824,7 @@
       <field name="name">Konsernbidrag</field>
       <field name="code">8930</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="89" name="parent_id" />
     </record>
@@ -3833,7 +3833,7 @@
       <field name="name">Aksjonærbidrag</field>
       <field name="code">8940</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="89" name="parent_id" />
     </record>
@@ -3842,7 +3842,7 @@
       <field name="name">Fondsemisjon</field>
       <field name="code">8950</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="89" name="parent_id" />
     </record>
@@ -3851,7 +3851,7 @@
       <field name="name">Overføring annen egenkapital</field>
       <field name="code">8960</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="89" name="parent_id" />
     </record>
@@ -3860,7 +3860,7 @@
       <field name="name">Udekket tap</field>
       <field name="code">8990</field>
       <field name="reconcile" eval="False"/>
-      <field name="user_type" ref="account_type_expense"/>
+      <field name="user_type" ref="account.data_account_type_expense"/>
       <field name="type">other</field>
       <field ref="89" name="parent_id" />
     </record>

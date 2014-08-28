@@ -37,6 +37,7 @@ Standard kontoplan NS 4102
                 'account_tax.xml',
                 'vat_report.py',
                 'views/report_vat.xml',
+                'views/account_tax.xml',
                 'account_report.xml',
     ],
     'demo': [],
