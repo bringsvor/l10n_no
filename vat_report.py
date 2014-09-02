@@ -307,12 +307,12 @@ and line.tax_code_id=tax.id
                 res_baseamount = self._get_amount(codeinfo['base_id'], period_list, company_id, based_on, context=context)
                 res_amount = self._get_amount(codeinfo['tax_id'], period_list, company_id, based_on, context=context)
                 print "CODEINFO", codeinfo['type_tax_use'], '--', codeinfo['type_tax_use'] == 'sale', codeinfo['type_tax_use'] == 'purchase'
-                if codeinfo['type_tax_use'] == 'sale':
-                    direction = 'credit'
-                    sign = 1.0
-                else:
-                    direction = 'debit'
-                    sign = -1.0
+                #if codeinfo['type_tax_use'] == 'sale':
+                #    #direction = 'credit'
+                #    sign = 1.0
+                #else:
+                #    #direction = 'debit'
+                #    #sign = -1.0
 
             if not res_baseamount:
                 tax_base_amount = tax_amount = 0.0
@@ -320,21 +320,29 @@ and line.tax_code_id=tax.id
                 percentage = None
                 tax_use = None
             else:
-                tax_base_amount = sum([ x[direction] for x in res_baseamount ])
-                tax_amount = sum([x[direction] for x in res_amount])
-                tax_base_reporting = sum([x['%s_reporting' % direction] for x in res_baseamount])
-                tax_amount_reporting = sum([x['%s_reporting' % direction] for x in res_amount])
+                print "TAX NAME", codeinfo['taxname'], 'tax amounts',\
+                ' '.join(repr([x['credit'] for x in res_amount] )),\
+                ' '.join(repr([x['debit'] for x in res_amount] ) )
+                tax_base_amount = sum([ x['credit'] for x in res_baseamount ]) - \
+                                    sum([ x['debit'] for x in res_baseamount ])
+                tax_amount = sum([x['credit'] for x in res_amount]) - \
+                        sum([x['debit'] for x in res_amount])
+                tax_base_reporting = sum([x['credit_reporting'] for x in res_baseamount]) - \
+                        sum([x['debit_reporting'] for x in res_baseamount])
+                tax_amount_reporting = sum([x['credit_reporting'] for x in res_amount]) - \
+                            sum([x['debit_reporting'] for x in res_amount])
                 percentage = codeinfo['amount'] * 100
                 tax_use = codeinfo['type_tax_use']
                 if percentage>0.0:
-                    total_amount_vatable += (sign * tax_base_amount)
-                    total_amount_vatable_reporting += (sign * tax_base_reporting)
+                    total_amount_vatable += tax_base_amount
+                    total_amount_vatable_reporting += tax_base_reporting
 
-            if sign > 0:
-                total_amount += tax_base_amount
-                total_amount_reporting += tax_base_reporting
-            tax_to_pay += sign * tax_amount
-            tax_to_pay_reporting += sign * tax_amount_reporting
+            #if sign > 0:
+            #    total_amount += tax_base_amount
+            #    total_amount_reporting += tax_base_reporting
+            # hmm
+            tax_to_pay += tax_amount
+            tax_to_pay_reporting += tax_amount_reporting
 
             res_dict = {'code' : post_number,
                         'name' : TAX_REPORT_STRINGS[post_number],
