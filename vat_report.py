@@ -21,6 +21,7 @@
 
 from openerp.osv import fields, osv
 from openerp.report import report_sxw
+from docutils.parsers.rst.directives import percentage
 from account_tax_code import TAX_REPORT_STRINGS
 from common_report_header import common_report_header
 
@@ -250,6 +251,11 @@ and line.tax_code_id=tax.id
                         ' from account_tax_code btc')
 
         basecodes = self.cr.dictfetchall()
+        basecodedict = {}
+        for bc in basecodes:
+            basecodedict[bc['base_id']] = bc
+
+        lines = []
 
         self.cr.execute('select tax.id as tax_id, tax.name as tax_name, tax.type_tax_use as tax_type, tax.amount as tax_amount,'
                             ' tax.ref_base_code_id, tax.ref_tax_code_id, tax.base_code_id, tax.tax_code_id '
@@ -257,6 +263,8 @@ and line.tax_code_id=tax.id
         taxcodes = self.cr.dictfetchall()
 
 
+
+        """
         basecodeinfo = {}
         for tc in taxcodes:
             ref = tc['ref_base_code_id']
@@ -264,14 +272,14 @@ and line.tax_code_id=tax.id
             tcid = tc['base_code_id']
             tctc = tc['tax_code_id']
             for baseid in ref, reftc, tcid, tctc:
-                if not baseid in basecodeinfo:
+                if baseid and not baseid in basecodeinfo:
                     basecodeinfo[baseid] = {'refbase' : [], 'reftc' : [], 'base' : [], 'tc' : []}
 
             basecodeinfo[baseid]['refbase'].append(ref)
             basecodeinfo[baseid]['reftc'].append(reftc)
             basecodeinfo[baseid]['base'].append(tcid)
             basecodeinfo[baseid]['tc'].append(tctc)
-
+        """
 
         # Gjedna
 
@@ -285,7 +293,6 @@ and line.tax_code_id=tax.id
             for p in periods:
                 period_list.append(p[0])
 
-        basecodeinfo = {}
         total_amount = 0.0
         total_amount_reporting = 0.0
         tax_to_pay = 0.0
@@ -293,12 +300,96 @@ and line.tax_code_id=tax.id
         total_amount_vatable = 0.0
         total_amount_vatable_reporting = 0.0
 
-        for basecode in basecodes:
-            # Get the taxes
-            #samle tax codes pr basecode...
 
-            for tax_code in basecode['taxcodes']:
-                res_baseamount = self._get_amount(basecode['base_id'], period_list, company_id, based_on, context=context)
+        self.cr.execute("""select line.ref, line.name, line.tax_amount, line.debit, line.credit, account.code, tax.name as taxname, tc.name as taxcodename, tc.position_in_tax_report, line.account_tax_id
+            from account_move_line line
+            left outer join account_account account on account.id=line.account_id
+            left outer join account_tax tax on tax.id=line.account_tax_id
+            left outer join account_tax_code tc on tc.id=line.tax_code_id
+            where ref like 'B%' """)
+        tcinfo = self.cr.dictfetchall()
+
+        postsum = []
+        for i in range(len(TAX_REPORT_STRINGS)):
+            postsum.append([0.0, 0.0])
+
+        for tc in tcinfo:
+            """ line.ref, line.name, line.debit, line.credit, account.code,
+            tax.name as taxname, tc.name as taxcodename, tc.position_in_tax_report,
+            line.account_tax_id """
+            zum = tc['credit'] - tc['debit']
+            amt = tc['tax_amount']
+            pos = tc['position_in_tax_report']
+            tcname = tc['taxcodename']
+            taxid = tc['account_tax_id']
+            if not pos:
+                continue
+
+            if taxid: # This is a base
+                postsum[pos][0] += amt
+            else:
+                postsum[pos][1] += amt
+
+        for post_number in range(len(postsum)):
+            percentage = 25 # NOT USED
+            tax_use = 'yes'
+            res_dict = {'code' : post_number,
+                        'name' : TAX_REPORT_STRINGS[post_number],
+                        'tax_base' : postsum[post_number][0],
+                        'tax_amount' : postsum[post_number][1],
+                        'tax_base_reporting' : postsum[post_number][0],
+                        'tax_amount_reporting' : postsum[post_number][1],
+                        'percentage' : percentage,
+                        'tax_use' : tax_use}
+            lines.append(res_dict)
+
+
+        # The sum code
+        res_dict = {'code' : 1,
+                        'name' : TAX_REPORT_STRINGS[1],
+                        'tax_base' : total_amount,
+                        'tax_amount' : None,
+                        'tax_base_reporting' : total_amount_reporting,
+                        'tax_amount_reporting' : None,
+                        'percentage' : None,
+                        'tax_use' : None}
+        lines.insert(0, res_dict)
+
+        res_dict = {'code' : 2,
+                        'name' : TAX_REPORT_STRINGS[2],
+                        'tax_base' : total_amount_vatable,
+                        'tax_amount' : None,
+                        'tax_base_reporting' : total_amount_vatable_reporting,
+                        'tax_amount_reporting' : None,
+                        'percentage' : None,
+                        'tax_use' : None}
+        lines.insert(1, res_dict)
+
+
+        if tax_to_pay > 0.0:
+            name = TAX_REPORT_STRINGS[11][0]
+        else:
+            name = TAX_REPORT_STRINGS[11][1]
+
+        res_dict = {'code' : 11,
+                        'name' : name,
+                        'tax_base' : None,
+                        'tax_amount' : tax_to_pay,
+                        'tax_base_reporting' : None,
+                        'tax_amount_reporting' : tax_to_pay_reporting,
+                        'percentage' : None,
+                        'tax_use' : None}
+        lines.append(res_dict)
+
+
+        # Check that all are there
+
+
+
+
+        return lines
+
+
 
 
 

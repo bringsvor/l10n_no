@@ -8,6 +8,7 @@
 			<field name="inherit_id" ref="account.view_tax_code_template_form"/>
 			<field name="arch" type="xml">
 				<field position="after" name="info">
+                    <label for="position_in_tax_report" />
                     <field name="position_in_tax_report" />
 			    </field>
 			</field>
