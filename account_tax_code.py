@@ -32,16 +32,16 @@ TAX_REPORT_SELECTION = [
     (10,TAX_REPORT_STRINGS[10]),
 ]
 
-class account_tax(models.Model):
-    _inherit = ['account.tax']
+class account_tax_code(models.Model):
+    _inherit = ['account.tax.code']
 
     position_in_tax_report = fields.Selection(TAX_REPORT_SELECTION,
                                               string = 'Field (post) in tax report')
 
 
-class account_tax_template(models.Model):
+class account_tax_code_template(models.Model):
     """ Add fields used to layout VAT declaration """
-    _inherit = 'account.tax.template'
+    _inherit = 'account.tax.code.template'
 
     position_in_tax_report = fields.Selection(TAX_REPORT_SELECTION,
                                               string = 'Field (post) in tax report')

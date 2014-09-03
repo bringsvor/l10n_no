@@ -21,7 +21,7 @@
 
 from openerp.osv import fields, osv
 from openerp.report import report_sxw
-from account_tax import TAX_REPORT_STRINGS
+from account_tax_code import TAX_REPORT_STRINGS
 from common_report_header import common_report_header
 
 import time
@@ -245,9 +245,65 @@ and line.tax_code_id=tax.id
 
 
 
-
-
     def _get_lines(self, based_on, company_id=False, parent=False, level=0, context=None):
+        self.cr.execute('select btc.id as base_id, btc.code as base_code, btc.name as basetaxcodename, btc.position_in_tax_report'
+                        ' from account_tax_code btc')
+
+        basecodes = self.cr.dictfetchall()
+
+        self.cr.execute('select tax.id as tax_id, tax.name as tax_name, tax.type_tax_use as tax_type, tax.amount as tax_amount,'
+                            ' tax.ref_base_code_id, tax.ref_tax_code_id, tax.base_code_id, tax.tax_code_id '
+                            ' from account_tax tax')
+        taxcodes = self.cr.dictfetchall()
+
+
+        basecodeinfo = {}
+        for tc in taxcodes:
+            ref = tc['ref_base_code_id']
+            reftc = tc['ref_tax_code_id']
+            tcid = tc['base_code_id']
+            tctc = tc['tax_code_id']
+            for baseid in ref, reftc, tcid, tctc:
+                if not baseid in basecodeinfo:
+                    basecodeinfo[baseid] = {'refbase' : [], 'reftc' : [], 'base' : [], 'tc' : []}
+
+            basecodeinfo[baseid]['refbase'].append(ref)
+            basecodeinfo[baseid]['reftc'].append(reftc)
+            basecodeinfo[baseid]['base'].append(tcid)
+            basecodeinfo[baseid]['tc'].append(tctc)
+
+
+        # Gjedna
+
+
+        period_list = self.period_ids
+        if not period_list:
+            self.cr.execute ("select id from account_fiscalyear")
+            fy = self.cr.fetchall()
+            self.cr.execute ("select id from account_period where fiscalyear_id = %s",(fy[0][0],))
+            periods = self.cr.fetchall()
+            for p in periods:
+                period_list.append(p[0])
+
+        basecodeinfo = {}
+        total_amount = 0.0
+        total_amount_reporting = 0.0
+        tax_to_pay = 0.0
+        tax_to_pay_reporting = 0.0
+        total_amount_vatable = 0.0
+        total_amount_vatable_reporting = 0.0
+
+        for basecode in basecodes:
+            # Get the taxes
+            #samle tax codes pr basecode...
+
+            for tax_code in basecode['taxcodes']:
+                res_baseamount = self._get_amount(basecode['base_id'], period_list, company_id, based_on, context=context)
+
+
+
+
+    def X_get_lines(self, based_on, company_id=False, parent=False, level=0, context=None):
         # Get the base codes
         self.cr.execute('select tax.position_in_tax_report as post, tax.name as taxname, tax.type, tax.amount, tax.type_tax_use, '
                                 ' btc.id as base_id, btc.code as base_code, btc.name as basetaxcodename, '
