@@ -37,6 +37,7 @@ class account_tax_code(models.Model):
 
     position_in_tax_report = fields.Selection(TAX_REPORT_SELECTION,
                                               string = 'Field (post) in tax report')
+    tax_exempt = fields.Boolean('Tax exempt')
 
 
 class account_tax_code_template(models.Model):
@@ -45,3 +46,4 @@ class account_tax_code_template(models.Model):
 
     position_in_tax_report = fields.Selection(TAX_REPORT_SELECTION,
                                               string = 'Field (post) in tax report')
+    tax_exempt = fields.Boolean('Tax exempt')

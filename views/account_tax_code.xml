@@ -7,9 +7,10 @@
 			<field name="model">account.tax.code.template</field>
 			<field name="inherit_id" ref="account.view_tax_code_template_form"/>
 			<field name="arch" type="xml">
-				<field position="after" name="info">
+				<field position="after" name="parent_id">
                     <label for="position_in_tax_report" />
                     <field name="position_in_tax_report" />
+                    <field name="tax_exempt" />
 			    </field>
 			</field>
 		</record>
@@ -19,8 +20,9 @@
             <field name="model">account.tax.code</field>
             <field name="inherit_id" ref="account.view_tax_code_form"/>
             <field name="arch" type="xml">
-                <field name="info" position="after">
+                <field name="sign" position="after">
                     <field name="position_in_tax_report" />
+                    <field name="tax_exempt" />
                 </field>
             </field>
         </record>

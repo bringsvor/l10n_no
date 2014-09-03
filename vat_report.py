@@ -244,23 +244,47 @@ and line.tax_code_id=tax.id
 
 """
 
+    def get_sign(self, signs, taxcode_id):
+        result = 1.0
+        if signs[taxcode_id][0]:
+            result = result * self.get_sign(signs, signs[taxcode_id][0])
+
+        return result * signs[taxcode_id][1]
+
 
 
     def _get_lines(self, based_on, company_id=False, parent=False, level=0, context=None):
-        self.cr.execute('select btc.id as base_id, btc.code as base_code, btc.name as basetaxcodename, btc.position_in_tax_report'
-                        ' from account_tax_code btc')
 
+        self.cr.execute('select id, parent_id, sign, tax_exempt from account_tax_code')
         basecodes = self.cr.dictfetchall()
-        basecodedict = {}
+        signs = {}
+        exempt = set()
         for bc in basecodes:
-            basecodedict[bc['base_id']] = bc
+            signs[bc['id']] = (bc['parent_id'], bc['sign'])
+            if bc['tax_exempt']:
+                exempt.add(bc['id'])
+        print "EXEMPT LIST", exempt
 
         lines = []
 
         self.cr.execute('select tax.id as tax_id, tax.name as tax_name, tax.type_tax_use as tax_type, tax.amount as tax_amount,'
-                            ' tax.ref_base_code_id, tax.ref_tax_code_id, tax.base_code_id, tax.tax_code_id '
+                            ' tax.ref_base_code_id, tax.ref_tax_code_id, tax.base_code_id, tax.tax_code_id'
                             ' from account_tax tax')
         taxcodes = self.cr.dictfetchall()
+        bases = set()
+        taxes = set()
+        purchases = set()
+        percentages = {}
+
+        for tax in taxcodes:
+            percentages[tax['tax_id']] = tax['tax_amount']
+            bases.add(tax['base_code_id'])
+            bases.add(tax['ref_base_code_id'])
+            taxes.add(tax['tax_code_id'])
+            taxes.add(tax['ref_tax_code_id'])
+            if tax['tax_type'] == 'purchase':
+                purchases.add(tax['tax_id'])
+
 
 
 
@@ -301,17 +325,19 @@ and line.tax_code_id=tax.id
         total_amount_vatable_reporting = 0.0
 
 
-        self.cr.execute("""select line.ref, line.name, line.tax_amount, line.debit, line.credit, account.code, tax.name as taxname, tc.name as taxcodename, tc.position_in_tax_report, line.account_tax_id
+        self.cr.execute("""select line.ref, line.name, line.tax_amount, line.tax_amount_in_reporting_currency,
+        line.debit, line.debit_in_reporting_currency, line.credit, line.credit_in_reporting_currency, account.code,
+        tc.name as taxcodename, tc.position_in_tax_report, line.account_tax_id, line.tax_code_id
             from account_move_line line
             left outer join account_account account on account.id=line.account_id
-            left outer join account_tax tax on tax.id=line.account_tax_id
+            ---left outer join account_tax tax on tax.id=line.account_tax_id
             left outer join account_tax_code tc on tc.id=line.tax_code_id
             where ref like 'B%' """)
         tcinfo = self.cr.dictfetchall()
 
         postsum = []
         for i in range(len(TAX_REPORT_STRINGS)):
-            postsum.append([0.0, 0.0])
+            postsum.append([0.0, 0.0, 0.0, 0.0])
 
         for tc in tcinfo:
             """ line.ref, line.name, line.debit, line.credit, account.code,
@@ -319,26 +345,44 @@ and line.tax_code_id=tax.id
             line.account_tax_id """
             zum = tc['credit'] - tc['debit']
             amt = tc['tax_amount']
+            amt_rep = tc['tax_amount_in_reporting_currency']
+            debcred = tc['credit'] - tc['debit']
+            debcred_rep = tc['credit_in_reporting_currency'] - tc['debit_in_reporting_currency']
+
             pos = tc['position_in_tax_report']
             tcname = tc['taxcodename']
             taxid = tc['account_tax_id']
+            codeid = tc['tax_code_id']
             if not pos:
                 continue
 
-            if taxid: # This is a base
+            factor = self.get_sign(signs, codeid)
+
+            if codeid in bases: # This is a base
                 postsum[pos][0] += amt
+                postsum[pos][2] += amt_rep
+                if taxid and not taxid in purchases:
+                    total_amount += factor * amt
+                    total_amount_reporting += factor * amt_rep
+                    if not codeid in exempt:
+                        total_amount_vatable += factor * amt
+                        total_amount_vatable_reporting += factor * amt_rep
             else:
                 postsum[pos][1] += amt
+                postsum[pos][3] += amt_rep
+                tax_to_pay += factor * amt
+                tax_to_pay_reporting += factor * amt_rep
 
-        for post_number in range(len(postsum)):
+
+        for post_number in range(2, len(postsum)-1):
             percentage = 25 # NOT USED
             tax_use = 'yes'
             res_dict = {'code' : post_number,
                         'name' : TAX_REPORT_STRINGS[post_number],
                         'tax_base' : postsum[post_number][0],
                         'tax_amount' : postsum[post_number][1],
-                        'tax_base_reporting' : postsum[post_number][0],
-                        'tax_amount_reporting' : postsum[post_number][1],
+                        'tax_base_reporting' : postsum[post_number][2],
+                        'tax_amount_reporting' : postsum[post_number][3],
                         'percentage' : percentage,
                         'tax_use' : tax_use}
             lines.append(res_dict)
@@ -374,9 +418,9 @@ and line.tax_code_id=tax.id
         res_dict = {'code' : 11,
                         'name' : name,
                         'tax_base' : None,
-                        'tax_amount' : tax_to_pay,
+                        'tax_amount' : abs(tax_to_pay),
                         'tax_base_reporting' : None,
-                        'tax_amount_reporting' : tax_to_pay_reporting,
+                        'tax_amount_reporting' : abs(tax_to_pay_reporting),
                         'percentage' : None,
                         'tax_use' : None}
         lines.append(res_dict)
@@ -703,4 +747,3 @@ class VatDeclarationReport(osv.AbstractModel):
 
     def render_html(self, cr, uid, ids, data=None, context=None):
         assert False
-
