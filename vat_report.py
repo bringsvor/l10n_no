@@ -332,7 +332,7 @@ and line.tax_code_id=tax.id
             left outer join account_account account on account.id=line.account_id
             ---left outer join account_tax tax on tax.id=line.account_tax_id
             left outer join account_tax_code tc on tc.id=line.tax_code_id
-            where ref like 'B%' """)
+             """)
         tcinfo = self.cr.dictfetchall()
 
         postsum = []
