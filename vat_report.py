@@ -46,6 +46,7 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
             'get_codes': self._get_codes,
             'get_general': self._get_general,
             'get_currency': self._get_currency,
+            'get_reporting_currency': self._get_reporting_currency,
             'get_lines': self._get_lines,
             'get_fiscalyear': self._get_fiscalyear,
             'get_account': self._get_account,
@@ -58,9 +59,14 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
     def _get_basedon(self, form):
         return form['form']['based_on']
 
+    def _get_reporting_currency(self, form):
+        company_id = form['form']['company_id']
+        rep = self.pool.get('res.company').browse(self.cr, self.uid, company_id).reporting_currency_id
+        return rep.name
 
     def set_context(self, objects, data, ids, report_type=None):
         new_ids = ids
+
         res = {}
         self.period_ids = []
         period_obj = self.pool.get('account.period')

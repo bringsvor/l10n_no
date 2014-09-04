@@ -58,10 +58,10 @@ Post 11 - Avgift til gode
                             <th width="4%">Post</th>
                             <th>Tekst</th>
                             <!--th class="text-right">Prosent</th -->
-                            <th class="text-right">Grunnlag</th>
-                            <th class="text-right">Kalkulert avgift</th>
-                            <th class="text-right">Grunnlag (NOK/EUR)</th>
-                            <th class="text-right">Kalkulert avgift (NOK/EUR)</th>
+                            <!-- <th class="text-right">Grunnlag</th>
+                            <th class="text-right">Kalkulert avgift</th> -->
+                            <th class="text-right">Grunnlag (<t t-esc="get_reporting_currency(data)" />)</th>
+                            <th class="text-right">Kalkulert avgift (<t t-esc="get_reporting_currency(data)" />)</th>
 
                         </tr>
                     </thead>
@@ -86,13 +86,13 @@ Post 11 - Avgift til gode
                                     <span t-if="taxline['percentage']" t-att-style="style" t-esc="taxline['percentage']"/>
                             </td> Not actually needed -->
                             <!-- <td class="text-right"><span t-att-style="style" t-esc="taxline['basis']"/></td> -->
-                                <td class="text-right"><t t-if="taxline['tax_base']"><span  t-att-style="style" t-esc="formatLang(taxline['tax_base'], currency_obj=res_company.currency_id)"/></t></td>
+<!-- This is in BK                                 <td class="text-right"><t t-if="taxline['tax_base']"><span  t-att-style="style" t-esc="formatLang(taxline['tax_base'], currency_obj=res_company.currency_id)"/></t></td> -->
                             <!-- <td class="text-right"><span t-att-style="style" t-esc="taxline['credit']"/></td> -->
-                            <td class="text-right">
+<!-- This is also in BK                            <td class="text-right">
                                 <t t-if="taxline['tax_amount']">
                                     <span  t-att-style="style" t-esc="formatLang(taxline['tax_amount'], currency_obj=res_company.currency_id)"/>
                                 </t>
-                            </td>
+                            </td> -->
 
                                 <td class="text-right"><t t-if="taxline['tax_base_reporting']"><span  t-att-style="style" t-esc="formatLang(taxline['tax_base_reporting'], currency_obj=res_company.reporting_currency_id)"/></t></td>
                             <td class="text-right">
