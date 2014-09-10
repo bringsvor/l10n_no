@@ -672,9 +672,9 @@ and line.tax_code_id=tax.id
 
 
 class report_vat(osv.AbstractModel):
-    _name = 'report.l10n_no.report_vat'
+    _name = 'report.l10n_no_vatreport.report_vat'
     _inherit = 'report.abstract_report'
-    _template = 'l10n_no.report_vat'
+    _template = 'l10n_no_vatreport.report_vat'
     _wrapped_report_class = secret_tax_report
 
     def get_account(self):
@@ -738,7 +738,7 @@ class l10n_no_vat_declaration(osv.osv_memory):
         datas['form']['company_id'] = taxcode.company_id.id
 
         #report_name = 'l10n_no.account.vat.declarationIII'
-        report_name = 'l10n_no.report_vat'
+        report_name = 'l10n_no_vatreport.report_vat'
         #report_name = 'report.l10n_no.account.report_vat' # 'l10n_no.account.vat.declarationIII' # 'account.report_vat'
         return self.pool['report'].get_action(cr, uid, [], report_name, data=datas, context=context)
 

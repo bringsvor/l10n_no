@@ -49,8 +49,8 @@
             model="account.tax.code"
             report_type="qweb-html"
             string="Account tax"
-            name="l10n_no.report_vat"
-            file="l10n_no.report_vat_file"
+            name="l10n_no_vatreport.report_vat"
+            file="l10n_no_vatreport.report_vat_file"
         />
 
 <!--
