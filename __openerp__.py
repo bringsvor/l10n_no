@@ -22,22 +22,22 @@
 {
     'name': 'Norway - Accounting',
     'version': '1.0',
-    'author': 'Datalege AS & ZedeS Tech',
-    'website': 'http://www.zedestech.com',
+    'author': 'Tinderbox AS and Bringsvor Consulting AS',
+    'website': 'http://www.tinderbox.no',
     'category': 'Localization/Account Charts',
     'description': """
-Norway - Chart of accounts.
+Norway - VAT report
 ==================================
 Standard kontoplan NS 4102
 """,
     'depends': ['base_iban', 'base_vat','account_chart','account'],
     'data': [
-                'account_tax_code.xml',
-                'l10n_no_chart.xml',
-                'account_tax.xml',
-                'vat_report.py',
+                #'account_tax_code.xml',
+                #'l10n_no_chart.xml',
+                #'account_tax.xml',
+                #'vat_report.py',
                 'views/report_vat.xml',
-                'views/account_tax_code.xml',
+                #'views/account_tax_code.xml',
                 'account_report.xml',
     ],
     'demo': [],
