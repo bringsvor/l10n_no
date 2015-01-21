@@ -38,35 +38,9 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
     #def _get_general(self, data):
     #    assert False
 
-    def __init__(self, cr, uid, name, context=None):
-        print "INIT!"
-        super(secret_tax_report, self).__init__(cr, uid, name, context=context)
-        self.localcontext.update({
-            'time': time,
-            'get_codes': self._get_codes,
-            'get_general': self._get_general,
-            'get_currency': self._get_currency,
-            'get_reporting_currency': self._get_reporting_currency,
-            'get_lines': self._get_lines,
-            'get_fiscalyear': self._get_fiscalyear,
-            'get_account': self._get_account,
-            'get_start_period': self.get_start_period,
-            'get_end_period': self.get_end_period,
-            'get_basedon': self._get_basedon,
-        })
-
-
-    def _get_basedon(self, form):
-        return form['form']['based_on']
-
-    def _get_reporting_currency(self, form):
-        company_id = form['form']['company_id']
-        rep = self.pool.get('res.company').browse(self.cr, self.uid, company_id).reporting_currency_id
-        return rep.name
 
     def set_context(self, objects, data, ids, report_type=None):
         new_ids = ids
-
         res = {}
         self.period_ids = []
         period_obj = self.pool.get('account.period')
@@ -85,50 +59,186 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
         return super(secret_tax_report, self).set_context(objects, data, new_ids, report_type=report_type)
 
 
-    def _get_codes(self, based_on, company_id, parent=False, level=0, period_list=None, context=None):
-        obj_tc = self.pool.get('account.tax.code')
-        ids = obj_tc.search(self.cr, self.uid, [('parent_id','=',parent),('company_id','=',company_id)], order='sequence', context=context)
+    def __init__(self, cr, uid, name, context=None):
+        print "INIT!"
+        super(secret_tax_report, self).__init__(cr, uid, name, context=context)
+        self.localcontext.update({
+            'time': time,
+            'get_codes': self._get_codes,
+            'get_general': self._get_general,
+            'get_currency': self._get_currency,
+            'get_reporting_currency': self._get_reporting_currency,
+            'get_lines': self._get_lines,
+            'get_fiscalyear': self._get_fiscalyear,
+            'get_account': self._get_account,
+            'get_start_period': self.get_start_period,
+            'get_end_period': self.get_end_period,
+            'get_basedon': self._get_basedon,
+        })
+
+    def _get_basedon(self, form):
+        return form['form']['based_on']
+
+
+    def _get_reporting_currency(self, form):
+        company_id = form['form']['company_id']
+        rep = self.pool.get('res.company').browse(self.cr, self.uid, company_id).reporting_currency_id
+        return rep.name
+
+    def _get_lines(self, data, based_on, company_id=False, context=None):
+        self.cr.execute("""select tc.id, tc.position_in_tax_report, tc.name, tax1.id as base, tax2.id as pay
+        from account_tax_code tc
+        left outer join account_tax tax1 on tax1.base_code_id=tc.id
+        left outer join account_tax tax2 on tax2.tax_code_id=tc.id
+        where (tax1.id is not null or tax2.id is not null)
+        and tc.company_id=1 and tc.position_in_tax_report is not null""")
+        res = self.cr.dictfetchall()
+        codes = {}
+
+        line_names = [
+        [1, 'Samlet omsetning og uttak innenfor og utenfor mva.-loven', 0.0, None],
+        [2, 'Samlet omsetning og uttak innenfor mva.-loven', 0.0, None],
+        [3, 'Omsetning og uttak i post 2 som er fritatt for mva', 0.0, 0.0],
+        [4, 'Omsetning og uttak i post 2 med standard sats', 0.0, 0.0],
+        [5, 'Omsetning og uttak i post 2 med middels sats', 0.0, 0.0],
+        [6, 'Omsetning og uttak i post 2 med lav sats', 0.0, 0.0],
+        [7, 'Tjenester kjøpt fra utlandet, og beregnet avgift 25%', 0.0, 0.0],
+        [8, 'Fradragsberettiget inngående avgift, standard sats', 0.0, 0.0],
+        [9, 'Fradragsberettiget inngående avgift, middels sats', 0.0, 0.0],
+        [10, 'Fradragsberettiget inngående avgift, lav sats', 0.0, 0.0],
+        [11, 'Avgift å betale', None, 0.0],
+        [11, 'Avgift til gode', None, 0.0],
+        ]
+
+
+        for row in res:
+            codes[row['id']] = row
+
+        period_list = []
+
+        form = data['form']
+        fiscal_year = form['fiscalyear_id']
+        start_period = form['period_from']
+        period_list.append(start_period) # Hack
+        if form['period_from']:
+            period_id = form['period_from']
+            period_list.append(period_id)
+        else:
+            self.cr.execute ("select id from account_period where fiscalyear_id = %d" % (fiscal_year))
+            periods = self.cr.fetchall()
+            for p in periods:
+                period_list.append(p[0])
+
+
+        query = """SELECT line.tax_code_id, tc.name, tc.position_in_tax_report,
+                sum(line.tax_amount) , sum(line.tax_amount_in_reporting_currency) as tax_amt_reporting
+                    FROM account_move_line  line,
+                    account_move AS move ,
+                        account_tax_code AS tc
+                WHERE 1=1
+--                    --WHERE line.tax_code_id IN %s '+where+'
+                   AND move.id = line.move_id
+                AND tc.id=line.tax_code_id
+                AND line.company_id=%(company_id)d
+                AND line.period_id IN (%(periods)s)
+            --join account_tax_code tc on tc.id=line.tax_code_id
+            GROUP BY line.tax_code_id, tc.name, tc.position_in_tax_report""" % {'company_id' : company_id,
+                                                                                'periods' : ','.join(['%d' % x for x in period_list])}
+
+        sum_all = 0.0
+        sum_applied = 0.0
+        to_pay = 0.0
+        print "QUERY", query
+        self.cr.execute(query)
+        res = self.cr.dictfetchall()
+        for row in res:
+            amount_reporting = round(row['tax_amt_reporting'], 0)
+            the_code = row['tax_code_id']
+            codeinfo = codes[the_code]
+            position = codeinfo['position_in_tax_report']
+            print "ROW", row
+            print "CODEINFO", codeinfo
+            assert codeinfo['base'] or codeinfo['pay']
+            assert not (codeinfo['base'] and codeinfo['pay'])
+            if codeinfo['base']:
+                # Grunnlag
+                if position in (3,4,5,6):
+                    sum_all += amount_reporting
+                if position in (4,5,6):
+                    sum_applied += amount_reporting
+                assert line_names[position-1][2] == 0.0
+                line_names[position-1][2] = amount_reporting
+            else:
+                if position in (7,8,9,10):
+                    sign = -1
+                else:
+                    sign = 1
+
+                to_pay += sign * amount_reporting
+
+                assert line_names[position-1][3] == 0.0
+                line_names[position-1][3] = amount_reporting
+
+        line_names[0][2] = sum_all
+        line_names[1][2] = sum_applied
+        if to_pay > 0:
+            line_names[10][3] = to_pay
+        else:
+            line_names[11][3] = abs(to_pay)
+
 
         res = []
-        for code in obj_tc.browse(self.cr, self.uid, ids, {'based_on': based_on}):
-            res.append(('.'*2*level, code))
-
-            res += self._get_codes(based_on, company_id, code.id, level+1, context=context)
+        for line in line_names:
+            li = {'code' : line[0],
+                  'name' : line[1],
+                  'tax_base_reporting' : line[2],
+                  'tax_amount_reporting' : line[3]}
+            res.append(li)
         return res
 
-    def _get_amount(self, tax_code_id, period_list, company_id, based_on, context):
-        print "GET AMOUNT", tax_code_id
-        period_ids = tuple(period_list)
-        if based_on == 'payments':
-            assert False
+
+
+    def X_get_lines(self, based_on, company_id=False, parent=False, level=0, context=None):
+        period_list = self.period_ids
+        res = self._get_codes(based_on, company_id, parent, level, period_list, context=context)
+        if period_list:
+            res = self._add_codes(based_on, res, period_list, context=context)
         else:
-            self.cr.execute("""SELECT SUM(line.tax_amount) AS tax_amount,
-                SUM(line.debit) AS debit,
-                SUM(line.credit) AS credit,
-                sum(line.tax_amount_in_reporting_currency) as tax_amount_reporting,
-                sum(line.debit_in_reporting_currency) as debit_reporting,
-                sum(line.credit_in_reporting_currency) as credit_reporting,
-                COUNT(*) AS count,
-                account.id AS account_id,
-                account.name AS name,
-                account.code AS code
-                FROM account_move_line AS line,
-                    account_account AS account
-                WHERE line.state <> %s
-                    AND line.tax_code_id = %s
-                    AND line.account_id = account.id
-                    AND account.company_id = %s
-                    AND line.period_id IN %s
-                    AND account.active
-                GROUP BY account.id,account.name,account.code""", ('draft', tax_code_id,
-                        company_id, period_ids,))
-            res = self.cr.dictfetchall()
+            self.cr.execute ("select id from account_fiscalyear")
+            fy = self.cr.fetchall()
+            self.cr.execute ("select id from account_period where fiscalyear_id = %s",(fy[0][0],))
+            periods = self.cr.fetchall()
+            for p in periods:
+                period_list.append(p[0])
+            res = self._add_codes(based_on, res, period_list, context=context)
 
-            print "VALUES RETURNED", res
-            #assert len(res) < 2
-            return res
+        i = 0
+        top_result = []
+        while i < len(res):
 
+            res_dict = { 'code': res[i][1].code,
+                'name': res[i][1].name,
+                'debit': 0,
+                'credit': 0,
+                'tax_base' : 0,
+                'tax_amount': res[i][1].sum_period,
+                'tax_amount_reporting' : res[i][1].sum_period,
+                'type': 1,
+                'level': res[i][0],
+                'pos': 0
+            }
 
+            top_result.append(res_dict)
+            res_general = self._get_general(res[i][1].id, period_list, company_id, based_on, context=context)
+            ind_general = 0
+            while ind_general < len(res_general):
+                res_general[ind_general]['type'] = 2
+                res_general[ind_general]['pos'] = 0
+                res_general[ind_general]['level'] = res_dict['level']
+                top_result.append(res_general[ind_general])
+                ind_general+=1
+            i+=1
+        return top_result
 
     def _get_general(self, tax_code_id, period_list, company_id, based_on, context=None):
         if not self.display_detail:
@@ -183,29 +293,85 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
         i = 0
         while i<len(res):
             res[i]['account'] = obj_account.browse(self.cr, self.uid, res[i]['account_id'], context=context)
+            res[i]['tax_base'] = 99.0
             i+=1
         return res
 
-    def _get_total_turnover(self, cr, uid):
-        return 0
+    def _get_codes(self, based_on, company_id, parent=False, level=0, period_list=[], context=None):
+        obj_tc = self.pool.get('account.tax.code')
+        ids = obj_tc.search(self.cr, self.uid, [('parent_id','=',parent),('company_id','=',company_id)], order='sequence', context=context)
+
+        res = []
+        for code in obj_tc.browse(self.cr, self.uid, ids, {'based_on': based_on}):
+            res.append(('.'*2*level, code))
+
+            res += self._get_codes(based_on, company_id, code.id, level+1, context=context)
+        return res
+
+    def _add_codes(self, based_on, account_list=[], period_list=[], context=None):
+        res = []
+        obj_tc = self.pool.get('account.tax.code')
+        for account in account_list:
+            ids = obj_tc.search(self.cr, self.uid, [('id','=', account[1].id)], context=context)
+            sum_tax_add = 0
+            for period_ind in period_list:
+                for code in obj_tc.browse(self.cr, self.uid, ids, {'period_id':period_ind,'based_on': based_on}):
+                    sum_tax_add = sum_tax_add + code.sum_period
+
+            code.sum_period = sum_tax_add
+
+            res.append((account[0], code))
+        return res
+
+    def _get_currency(self, form, context=None):
+        return self.pool.get('res.company').browse(self.cr, self.uid, form['company_id'], context=context).currency_id.name
+
+    def sort_result(self, accounts, context=None):
+        # On boucle sur notre rapport
+        result_accounts = []
+        ind=0
+        old_level=0
+        while ind<len(accounts):
+            #
+            account_elem = accounts[ind]
+            #
+
+            #
+            # we will now check if the level is lower than the previous level, in this case we will make a subtotal
+            if (account_elem['level'] < old_level):
+                bcl_current_level = old_level
+                bcl_rup_ind = ind - 1
+
+                while (bcl_current_level >= int(accounts[bcl_rup_ind]['level']) and bcl_rup_ind >= 0 ):
+                    res_tot = { 'code': accounts[bcl_rup_ind]['code'],
+                        'name': '',
+                        'debit': 0,
+                        'credit': 0,
+                        'tax_amount': accounts[bcl_rup_ind]['tax_amount'],
+                        'tax_amount_reporting': accounts[bcl_rup_ind]['tax_amount'],
+                        'type': accounts[bcl_rup_ind]['type'],
+                        'level': 0,
+                        'pos': 0
+                    }
+
+                    if res_tot['type'] == 1:
+                        # on change le type pour afficher le total
+                        res_tot['type'] = 2
+                        result_accounts.append(res_tot)
+                    bcl_current_level =  accounts[bcl_rup_ind]['level']
+                    bcl_rup_ind -= 1
+
+            old_level = account_elem['level']
+            result_accounts.append(account_elem)
+            ind+=1
+
+        return result_accounts
 
 
-    codes = [
-        (1, 'Samlet omsetning og uttak innenfor og utenfor mva.-loven', _get_total_turnover),
-        (2, 'Samlet omsetning og uttak innenfor mva.-loven'),
-        (3, 'Omsetning og uttak i post 2 som er fritatt for mva'),
-        (4, 'Omsetning og uttak i post 2 med standard sats'),
-        (5, 'Omsetning og uttak i post 2 med middels sats'),
-        (6, 'Omsetning og uttak i post 2 med lav sats'),
-        (7, 'Tjenester kjøpt fra utlandet, og beregnet avgift 25%'),
-        (8, 'Fradragsberettiget inngående avgift, standard sats'),
-        (9, 'Fradragsberettiget inngående avgift, middels sats'),
-        (10, 'Fradragsberettiget inngående avgift, lav sats'),
-        (11, 'Avgift å betale'),
-        (11, 'Avgift til gode')
-    ]
+
+
 ### Trur vi må bruke ir.property for å konfigurere dette, i alle fall felt 7.
-    """
+"""
 
 elmatica8-15=# select tax.name, tc.name, tax.type_tax_use from account_tax tax, account_tax_code tc where tax.base_code_id=tc.id;
           name           |          name           | type_tax_use
@@ -218,182 +384,8 @@ elmatica8-15=# select tax.name, tc.name, tax.type_tax_use from account_tax tax, 
  Inngående 8% MVA        | Base of Taxed Purchases | purchase
 (6 rows)
 """
-    """
-
-SELECT SUM(line.tax_amount) AS tax_amount,
-                        SUM(line.debit) AS debit,
-                        SUM(line.credit) AS credit,
-                        COUNT(*) AS count,
-                        account.id AS account_id,
-                        account.name AS name,
-                        account.code AS code,
-                line.period_id, tax.name
-                    FROM account_move_line AS line,
-                        account_account AS account ,
-account_tax_code as tax
-                    WHERE line.state <> 'draft'
-                    --    AND line.tax_code_id = %s
-and line.tax_code_id=tax.id
-                        AND line.account_id = account.id
-                    --    AND account.company_id = %s
-                    --    AND line.period_id IN %s
-                        AND account.active
-                    GROUP BY account.id,account.name,account.code, line.period_id, tax.name;
-
-
-
- tax_amount | debit | credit  | count | account_id |                     name                      | code | period_id |         name
-------------+-------+---------+-------+------------+-----------------------------------------------+------+-----------+----------------------
-      80.00 |  0.00 |   80.00 |     1 |        133 | Utgående merverdiavgift                       | 2700 |         9 | Tax Due (Tax to pay)
-    1000.00 |  0.00 | 1000.00 |     1 |        162 | Salgsinntekt handelsvarer avgiftspl. høy sats | 3000 |         9 | Base of Taxed Sales
-(2 rows)
 
 """
-
-    def get_sign(self, signs, taxcode_id):
-        result = 1.0
-        if signs[taxcode_id][0]:
-            result = result * self.get_sign(signs, signs[taxcode_id][0])
-
-        return result * signs[taxcode_id][1]
-
-
-
-    def _get_lines(self, based_on, company_id=False, parent=False, level=0, context=None):
-
-        self.cr.execute('select id, parent_id, sign, tax_exempt from account_tax_code')
-        basecodes = self.cr.dictfetchall()
-        signs = {}
-        exempt = set()
-        for bc in basecodes:
-            signs[bc['id']] = (bc['parent_id'], bc['sign'])
-            if bc['tax_exempt']:
-                exempt.add(bc['id'])
-        print "EXEMPT LIST", exempt
-
-        lines = []
-
-        self.cr.execute('select tax.id as tax_id, tax.name as tax_name, tax.type_tax_use as tax_type, tax.amount as tax_amount,'
-                            ' tax.ref_base_code_id, tax.ref_tax_code_id, tax.base_code_id, tax.tax_code_id'
-                            ' from account_tax tax')
-        taxcodes = self.cr.dictfetchall()
-        bases = set()
-        taxes = set()
-        purchases = set()
-        percentages = {}
-
-        for tax in taxcodes:
-            percentages[tax['tax_id']] = tax['tax_amount']
-            bases.add(tax['base_code_id'])
-            bases.add(tax['ref_base_code_id'])
-            taxes.add(tax['tax_code_id'])
-            taxes.add(tax['ref_tax_code_id'])
-            if tax['tax_type'] == 'purchase':
-                purchases.add(tax['tax_id'])
-
-
-
-
-        """
-        basecodeinfo = {}
-        for tc in taxcodes:
-            ref = tc['ref_base_code_id']
-            reftc = tc['ref_tax_code_id']
-            tcid = tc['base_code_id']
-            tctc = tc['tax_code_id']
-            for baseid in ref, reftc, tcid, tctc:
-                if baseid and not baseid in basecodeinfo:
-                    basecodeinfo[baseid] = {'refbase' : [], 'reftc' : [], 'base' : [], 'tc' : []}
-
-            basecodeinfo[baseid]['refbase'].append(ref)
-            basecodeinfo[baseid]['reftc'].append(reftc)
-            basecodeinfo[baseid]['base'].append(tcid)
-            basecodeinfo[baseid]['tc'].append(tctc)
-        """
-
-        # Gjedna
-
-
-        period_list = self.period_ids
-        if not period_list:
-            self.cr.execute ("select id from account_fiscalyear")
-            fy = self.cr.fetchall()
-            self.cr.execute ("select id from account_period where fiscalyear_id = %s",(fy[0][0],))
-            periods = self.cr.fetchall()
-            for p in periods:
-                period_list.append(p[0])
-
-        total_amount = 0.0
-        total_amount_reporting = 0.0
-        tax_to_pay = 0.0
-        tax_to_pay_reporting = 0.0
-        total_amount_vatable = 0.0
-        total_amount_vatable_reporting = 0.0
-
-
-        self.cr.execute("""select line.ref, line.name, line.tax_amount, line.tax_amount_in_reporting_currency,
-        line.debit, line.debit_in_reporting_currency, line.credit, line.credit_in_reporting_currency, account.code,
-        tc.name as taxcodename, tc.position_in_tax_report, line.account_tax_id, line.tax_code_id
-            from account_move_line line
-            left outer join account_account account on account.id=line.account_id
-            ---left outer join account_tax tax on tax.id=line.account_tax_id
-            left outer join account_tax_code tc on tc.id=line.tax_code_id
-             """)
-        tcinfo = self.cr.dictfetchall()
-
-        postsum = []
-        for i in range(len(TAX_REPORT_STRINGS)):
-            postsum.append([0.0, 0.0, 0.0, 0.0])
-
-        for tc in tcinfo:
-            """ line.ref, line.name, line.debit, line.credit, account.code,
-            tax.name as taxname, tc.name as taxcodename, tc.position_in_tax_report,
-            line.account_tax_id """
-            zum = tc['credit'] - tc['debit']
-            amt = tc['tax_amount']
-            amt_rep = tc['tax_amount_in_reporting_currency']
-            debcred = tc['credit'] - tc['debit']
-            debcred_rep = tc['credit_in_reporting_currency'] - tc['debit_in_reporting_currency']
-
-            pos = tc['position_in_tax_report']
-            tcname = tc['taxcodename']
-            taxid = tc['account_tax_id']
-            codeid = tc['tax_code_id']
-            if not pos:
-                continue
-
-            factor = self.get_sign(signs, codeid)
-
-            if codeid in bases: # This is a base
-                postsum[pos][0] += amt
-                postsum[pos][2] += amt_rep
-                if taxid and not taxid in purchases:
-                    total_amount += factor * amt
-                    total_amount_reporting += factor * amt_rep
-                    if not codeid in exempt:
-                        total_amount_vatable += factor * amt
-                        total_amount_vatable_reporting += factor * amt_rep
-            else:
-                postsum[pos][1] += amt
-                postsum[pos][3] += amt_rep
-                tax_to_pay += factor * amt
-                tax_to_pay_reporting += factor * amt_rep
-
-
-        for post_number in range(2, len(postsum)-1):
-            percentage = 25 # NOT USED
-            tax_use = 'yes'
-            res_dict = {'code' : post_number,
-                        'name' : TAX_REPORT_STRINGS[post_number],
-                        'tax_base' : postsum[post_number][0],
-                        'tax_amount' : postsum[post_number][1],
-                        'tax_base_reporting' : postsum[post_number][2],
-                        'tax_amount_reporting' : postsum[post_number][3],
-                        'percentage' : percentage,
-                        'tax_use' : tax_use}
-            lines.append(res_dict)
-
-
         # The sum code
         res_dict = {'code' : 1,
                         'name' : TAX_REPORT_STRINGS[1],
@@ -439,235 +431,8 @@ and line.tax_code_id=tax.id
 
         return lines
 
+"""
 
-
-
-
-
-    def X_get_lines(self, based_on, company_id=False, parent=False, level=0, context=None):
-        # Get the base codes
-        self.cr.execute('select tax.position_in_tax_report as post, tax.name as taxname, tax.type, tax.amount, tax.type_tax_use, '
-                                ' btc.id as base_id, btc.code as base_code, btc.name as basetaxcodename, '
-                                ' tc.id as tax_id, tc.code as tax_code, btc.name as taxcodename '
-                                'from account_tax tax '
-                                'left outer join account_tax_code btc on tax.base_code_id=btc.id '
-                                'left outer join account_tax_code tc on tax.tax_code_id=tc.id '
-                                'order by position_in_tax_report'
-        )
-        #self.cr.execute('select tax.name as taxname, tax.type, tax.amount, tax.type_tax_use '
-        #                        'from account_tax tax '
-        #                        'order by tax.amount desc, tax.type_tax_use'
-        #)
-
-
-
-        basecodes =  self.cr.dictfetchall()
-        period_list = self.period_ids
-        if not period_list:
-            self.cr.execute ("select id from account_fiscalyear")
-            fy = self.cr.fetchall()
-            self.cr.execute ("select id from account_period where fiscalyear_id = %s",(fy[0][0],))
-            periods = self.cr.fetchall()
-            for p in periods:
-                period_list.append(p[0])
-
-
-        # MÅ FIKSE SLIK AT BASE CODE ER FORSKJELLIG!
-        base_amounts = {}
-        lines = []
-
-        total_amount = 0.0
-        total_amount_reporting = 0.0
-        tax_to_pay = 0.0
-        tax_to_pay_reporting = 0.0
-        total_amount_vatable = 0.0
-        total_amount_vatable_reporting = 0.0
-
-        for post_number in range(3, len(TAX_REPORT_STRINGS)-1):
-            self.cr.execute('select tax.position_in_tax_report as post, tax.name as taxname, tax.type, tax.amount, tax.type_tax_use, '
-                                ' btc.id as base_id, btc.code as base_code, btc.name as basetaxcodename, '
-                                ' tc.id as tax_id, tc.code as tax_code, btc.name as taxcodename '
-                                'from account_tax tax '
-                                'left outer join account_tax_code btc on tax.base_code_id=btc.id '
-                                'left outer join account_tax_code tc on tax.tax_code_id=tc.id '
-                                'where position_in_tax_report=%d' % post_number)
-            if self.cr.rowcount:
-                codeinfo = self.cr.dictfetchall()[0]
-            else:
-                codeinfo = None
-
-
-            print "CODEINFO", codeinfo
-
-            res_baseamount = res_amount = None
-            if codeinfo:
-                res_baseamount = self._get_amount(codeinfo['base_id'], period_list, company_id, based_on, context=context)
-                res_amount = self._get_amount(codeinfo['tax_id'], period_list, company_id, based_on, context=context)
-                print "CODEINFO", codeinfo['type_tax_use'], '--', codeinfo['type_tax_use'] == 'sale', codeinfo['type_tax_use'] == 'purchase'
-                #if codeinfo['type_tax_use'] == 'sale':
-                #    #direction = 'credit'
-                #    sign = 1.0
-                #else:
-                #    #direction = 'debit'
-                #    #sign = -1.0
-
-            if not res_baseamount:
-                tax_base_amount = tax_amount = 0.0
-                tax_base_reporting = tax_amount_reporting = 0.0
-                percentage = None
-                tax_use = None
-            else:
-                print "TAX NAME", codeinfo['taxname'], 'tax amounts',\
-                ' '.join(repr([x['credit'] for x in res_amount] )),\
-                ' '.join(repr([x['debit'] for x in res_amount] ) )
-                tax_base_amount = sum([ x['credit'] for x in res_baseamount ]) - \
-                                    sum([ x['debit'] for x in res_baseamount ])
-                tax_amount = sum([x['credit'] for x in res_amount]) - \
-                        sum([x['debit'] for x in res_amount])
-                tax_base_reporting = sum([x['credit_reporting'] for x in res_baseamount]) - \
-                        sum([x['debit_reporting'] for x in res_baseamount])
-                tax_amount_reporting = sum([x['credit_reporting'] for x in res_amount]) - \
-                            sum([x['debit_reporting'] for x in res_amount])
-                percentage = codeinfo['amount'] * 100
-                tax_use = codeinfo['type_tax_use']
-                if percentage>0.0:
-                    total_amount_vatable += tax_base_amount
-                    total_amount_vatable_reporting += tax_base_reporting
-
-            #if sign > 0:
-            #    total_amount += tax_base_amount
-            #    total_amount_reporting += tax_base_reporting
-            # hmm
-            tax_to_pay += tax_amount
-            tax_to_pay_reporting += tax_amount_reporting
-
-            res_dict = {'code' : post_number,
-                        'name' : TAX_REPORT_STRINGS[post_number],
-                        'tax_base' : tax_base_amount,
-                        'tax_amount' : tax_amount,
-                        'tax_base_reporting' : tax_base_reporting,
-                        'tax_amount_reporting' : tax_amount_reporting,
-                        'percentage' : percentage,
-                        'tax_use' : tax_use}
-            print "RES_DICT", res_dict
-            #base_amounts.append( (codeinfo['tax_use'], codeinfo['amount'], res_baseamount['tax_amount'] )  )
-            #res_general = self._get_general(codeinfo['id'], period_list, company_id, based_on, context=context)
-            lines.append(res_dict)
-
-        # The sum code
-        res_dict = {'code' : 1,
-                        'name' : TAX_REPORT_STRINGS[1],
-                        'tax_base' : total_amount,
-                        'tax_amount' : None,
-                        'tax_base_reporting' : total_amount_reporting,
-                        'tax_amount_reporting' : None,
-                        'percentage' : None,
-                        'tax_use' : codeinfo['type_tax_use']}
-        lines.insert(0, res_dict)
-
-        res_dict = {'code' : 2,
-                        'name' : TAX_REPORT_STRINGS[2],
-                        'tax_base' : total_amount_vatable,
-                        'tax_amount' : None,
-                        'tax_base_reporting' : total_amount_vatable_reporting,
-                        'tax_amount_reporting' : None,
-                        'percentage' : None,
-                        'tax_use' : codeinfo['type_tax_use']}
-        lines.insert(1, res_dict)
-
-
-        if tax_to_pay > 0.0:
-            name = TAX_REPORT_STRINGS[11][0]
-        else:
-            name = TAX_REPORT_STRINGS[11][1]
-
-        res_dict = {'code' : 11,
-                        'name' : name,
-                        'tax_base' : None,
-                        'tax_amount' : tax_to_pay,
-                        'tax_base_reporting' : None,
-                        'tax_amount_reporting' : tax_to_pay_reporting,
-                        'percentage' : None,
-                        'tax_use' : codeinfo['type_tax_use']}
-        lines.append(res_dict)
-
-
-        # Check that all are there
-
-
-
-
-        return lines
-
-        """
-        for linetype in self.codes:
-            res_dict = { 'code': linetype[0],
-                'name': linetype[1],
-                'tax_base': 10000,
-                'tax_amount': 9299,
-            }
-            lines.append(res_dict)
-        return lines
-
-
-
-        period_list = self.period_ids
-        res = self._get_codes(based_on, company_id, parent, level, period_list, context=context)
-        if period_list:
-            res = self._add_codes(based_on, res, period_list, context=context)
-        else:
-            self.cr.execute ("select id from account_fiscalyear")
-            fy = self.cr.fetchall()
-            self.cr.execute ("select id from account_period where fiscalyear_id = %s",(fy[0][0],))
-            periods = self.cr.fetchall()
-            for p in periods:
-                period_list.append(p[0])
-            res = self._add_codes(based_on, res, period_list, context=context)
-
-        i = 0
-        top_result = []
-        while i < len(res):
-
-            res_dict = { 'code': res[i][1].code,
-                'name': res[i][1].name,
-                'tax_base': 0,
-                'tax_amount': res[i][1].sum_period,
-                'type': 1,
-                'level': res[i][0],
-                'pos': 0
-            }
-
-            top_result.append(res_dict)
-            res_general = self._get_general(res[i][1].id, period_list, company_id, based_on, context=context)
-            ind_general = 0
-            while ind_general < len(res_general):
-                res_general[ind_general]['type'] = 2
-                res_general[ind_general]['pos'] = 0
-                res_general[ind_general]['level'] = res_dict['level']
-                top_result.append(res_general[ind_general])
-                ind_general+=1
-            i+=1
-        return top_result
-        """
-
-    def _add_codes(self, based_on, account_list=None, period_list=None, context=None):
-        if account_list is None:
-            account_list = []
-        if period_list is None:
-            period_list = []
-        res = []
-        obj_tc = self.pool.get('account.tax.code')
-        for account in account_list:
-            ids = obj_tc.search(self.cr, self.uid, [('id','=', account[1].id)], context=context)
-            sum_tax_add = 0
-            for period_ind in period_list:
-                for code in obj_tc.browse(self.cr, self.uid, ids, {'period_id':period_ind,'based_on': based_on}):
-                    sum_tax_add = sum_tax_add + code.sum_period
-
-            code.sum_period = sum_tax_add
-
-            res.append((account[0], code))
-        return res
 
 
 
