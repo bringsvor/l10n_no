@@ -19,6 +19,7 @@
 #
 ##############################################################################
 
+import logging
 from openerp.osv import fields, osv
 from openerp.report import report_sxw
 from docutils.parsers.rst.directives import percentage
@@ -27,6 +28,7 @@ from common_report_header import common_report_header
 
 import time
 
+_logger = logging.getLogger(__name__)
 
 class secret_tax_report(report_sxw.rml_parse, common_report_header):
     #def _get_account(self, data):
@@ -91,7 +93,9 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
         left outer join account_tax tax1 on tax1.base_code_id=tc.id
         left outer join account_tax tax2 on tax2.tax_code_id=tc.id
         where (tax1.id is not null or tax2.id is not null)
-        and tc.company_id=1 and tc.position_in_tax_report is not null""")
+        and tc.company_id=%(company_id)d and tc.position_in_tax_report is not null""" %
+                        {'company_id' : company_id}
+        )
         res = self.cr.dictfetchall()
         codes = {}
 
@@ -131,7 +135,7 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
 
 
         query = """SELECT line.tax_code_id, tc.name, tc.position_in_tax_report,
-                sum(line.tax_amount) , sum(line.tax_amount_in_reporting_currency) as tax_amt_reporting
+                sum(abs(line.tax_amount)) , sum(abs(line.tax_amount_in_reporting_currency)) as tax_amt_reporting
                     FROM account_move_line  line,
                     account_move AS move ,
                         account_tax_code AS tc
@@ -154,7 +158,12 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
         for row in res:
             amount_reporting = round(row['tax_amt_reporting'], 0)
             the_code = row['tax_code_id']
-            codeinfo = codes[the_code]
+            codeinfo = codes.get(the_code)
+            if not codeinfo:
+                assert amount_reporting == 0.0, 'The amount_reporting is %.2f but we have no codeinfo for taxcode id %d - %s' % (amount_reporting, the_code, codes.keys())
+                continue
+            assert codeinfo
+            _logger.info('Found codeinfo for tax %d : %s', the_code, codeinfo)
             position = codeinfo['position_in_tax_report']
             print "ROW", row
             print "CODEINFO", codeinfo
@@ -162,9 +171,9 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
             assert not (codeinfo['base'] and codeinfo['pay'])
             if codeinfo['base']:
                 # Grunnlag
-                if position in (3,4,5,6):
+                if position in (3,4,5,6,7):
                     sum_all += amount_reporting
-                if position in (4,5,6):
+                if position in (4,5,6,7):
                     sum_applied += amount_reporting
                 assert line_names[position-1][2] == 0.0
                 line_names[position-1][2] = amount_reporting
