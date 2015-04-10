@@ -22,6 +22,7 @@
 import logging
 from openerp.osv import fields, osv
 from openerp.report import report_sxw
+from datetime import datetime
 from docutils.parsers.rst.directives import percentage
 from account_tax_code import TAX_REPORT_STRINGS
 from common_report_header import common_report_header
@@ -125,8 +126,19 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
         start_period = form['period_from']
         period_list.append(start_period) # Hack
         if form['period_from']:
-            period_id = form['period_from']
-            period_list.append(period_id)
+            self.cr.execute('select id, date_start, date_stop from account_period where id>=%s and id<=%s order by date_start', (form['period_from'], form['period_to']))
+            # Verify the sequence
+            verify_date = None
+            periods = self.cr.fetchall()
+            for period in periods:
+                if not verify_date:
+                    verify_date = datetime.strptime(period[2], '%Y-%m-%d').date()
+                else:
+                    new_date = datetime.strptime(period[1], '%Y-%m-%d').date()
+                    assert new_date > verify_date
+                    verify_date = new_date
+
+                period_list.append(period[0])
         else:
             self.cr.execute ("select id from account_period where fiscalyear_id = %d" % (fiscal_year))
             periods = self.cr.fetchall()
