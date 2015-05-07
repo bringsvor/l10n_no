@@ -26,6 +26,8 @@ from datetime import datetime
 from docutils.parsers.rst.directives import percentage
 from account_tax_code import TAX_REPORT_STRINGS
 from common_report_header import common_report_header
+from openerp import _
+
 
 import time
 
@@ -72,6 +74,7 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
             'get_currency': self._get_currency,
             'get_reporting_currency': self._get_reporting_currency,
             'get_lines': self._get_lines,
+            'get_details': self._get_details,
             'get_fiscalyear': self._get_fiscalyear,
             'get_account': self._get_account,
             'get_start_period': self.get_start_period,
@@ -88,7 +91,78 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
         rep = self.pool.get('res.company').browse(self.cr, self.uid, company_id).reporting_currency_id
         return rep.name
 
+    def get_total_turnover(self, company_id, periods):
+        period_ids = ','.join(['%d' % x for x in periods if x])
+        #self.cr.execute('select distinct base_code_id from account_tax where company_id=1 and base_code_id is not null')
+
+        self.cr.execute('select sum(aml.tax_amount_in_reporting_currency) from account_move_line aml '
+                        'join account_account a on a.id=aml.account_id where tax_code_id in '
+                        ' (select distinct base_code_id from account_tax where company_id=%(company_id)d and base_code_id is not null) '
+                        'and aml.period_id in (%(period_ids)s)' % {'period_ids' : period_ids, 'company_id': company_id})
+        res = self.cr.fetchall()
+        assert len(res) == 1
+        return res[0][0]
+
+    def get_taxcode_sums(self, company_id, periods):
+        self.cr.execute("select aml.tax_code_id as taxcode, tc.position_in_tax_report as position, sum(aml.tax_amount_in_reporting_currency) as sum_reporting "
+                        "from account_move_line aml  join account_tax_code tc on tc.id=aml.tax_code_id where aml.company_id=%(company_id)d "
+                        "and aml.period_id in (%(period_ids)s) group by aml.tax_code_id, tc.position_in_tax_report" % {'period_ids': periods, 'company_id': company_id})
+        retval = {}
+        for line in self.cr.dictfetchall():
+            retval[line['taxcode']] = (line['position'], line['sum_reporting'])
+        return retval
+
+    def _get_details(self, data, company_id=False, context=None):
+        period_list = self.get_period_list(data)
+        form = data['form']
+        if not form['display_detail']:
+            return []
+
+        period_ids = ','.join(['%d' % x for x in period_list if x])
+
+        self.cr.execute("select a.code as account, tc.code as tc, tc.name as tcname,  sum(aml.tax_amount_in_reporting_currency) as tax_amount "
+                        "from account_move_line aml join account_account a on a.id=aml.account_id "
+                        "join account_tax_code tc on aml.tax_code_id=tc.id "
+                        "where aml.company_id=%(company_id)d and aml.period_id in (%(period_ids)s) "
+                        "group by a.code, tc.code, tc.name order by a.code" % {'period_ids': period_ids, 'company_id': company_id})
+
+        retval = []
+        for line in self.cr.dictfetchall():
+            retval.append(line)
+        return retval
+
+
+    def get_period_list(self, data):
+        period_list = []
+        form = data['form']
+        fiscal_year = form['fiscalyear_id']
+        start_period = form['period_from']
+        period_list.append(start_period)  # Hack
+        if form['period_from']:
+            self.cr.execute(
+                'select id, date_start, date_stop from account_period where id>=%s and id<=%s order by date_start',
+                (form['period_from'], form['period_to']))
+            # Verify the sequence
+            verify_date = None
+            periods = self.cr.fetchall()
+            for period in periods:
+                if not verify_date:
+                    verify_date = datetime.strptime(period[2], '%Y-%m-%d').date()
+                else:
+                    new_date = datetime.strptime(period[1], '%Y-%m-%d').date()
+                    assert new_date > verify_date
+                    verify_date = new_date
+
+                period_list.append(period[0])
+        else:
+            self.cr.execute("select id from account_period where fiscalyear_id = %d" % (fiscal_year))
+            periods = self.cr.fetchall()
+            for p in periods:
+                period_list.append(p[0])
+        return period_list
+
     def _get_lines(self, data, based_on, company_id=False, context=None):
+
         self.cr.execute("""select tc.id, tc.position_in_tax_report, tc.name, tax1.id as base, tax2.id as pay
         from account_tax_code tc
         left outer join account_tax tax1 on tax1.base_code_id=tc.id
@@ -119,31 +193,77 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
         for row in res:
             codes[row['id']] = row
 
-        period_list = []
+        period_list = self.get_period_list(data)
 
-        form = data['form']
-        fiscal_year = form['fiscalyear_id']
-        start_period = form['period_from']
-        period_list.append(start_period) # Hack
-        if form['period_from']:
-            self.cr.execute('select id, date_start, date_stop from account_period where id>=%s and id<=%s order by date_start', (form['period_from'], form['period_to']))
-            # Verify the sequence
-            verify_date = None
-            periods = self.cr.fetchall()
-            for period in periods:
-                if not verify_date:
-                    verify_date = datetime.strptime(period[2], '%Y-%m-%d').date()
-                else:
-                    new_date = datetime.strptime(period[1], '%Y-%m-%d').date()
-                    assert new_date > verify_date
-                    verify_date = new_date
+        period_ids = ','.join(['%d' % x for x in period_list if x])
+        self.cr.execute("select mov.name, aml.name, tax_amount_in_reporting_currency"
+                        " from account_move_line aml join account_move mov on mov.id=aml.move_id "
+                        "where aml.tax_amount_in_reporting_currency!=0 and tax_code_id is null "
+                        "and aml.company_id=%(company_id)d "
+                        "and aml.period_id in (%(period_ids)s)" % {'period_ids': period_ids, 'company_id': company_id})
+        res = self.cr.fetchall()
+        if len(res):
+            the_names = ' '.join([x[0] for x in res])
+            raise Warning(_('Error'), _('Illegal postings. Accounting moves without VAT code, but has amount. %s' % the_names))
 
-                period_list.append(period[0])
+        taxcode_sums = self.get_taxcode_sums(company_id, period_ids)
+        self.cr.execute("select name, base_code_id,ref_base_code_id,tax_code_id,ref_tax_code_id, sequence from account_tax where company_id=%(company_id)d order by sequence" % {'company_id':company_id})
+        linedata = {}
+
+        sum_all = 0.0
+        sum_applied = 0.0
+        to_pay = 0.0
+
+        for lineinfo in self.cr.dictfetchall():
+            position = lineinfo['sequence']
+            # A little bit worried about the signs...
+            print "YEAH", taxcode_sums.values()
+            base_amt = taxcode_sums.get(lineinfo['base_code_id'], [None, 0.0])[1]
+            #if lineinfo['base_code_id'] != lineinfo['ref_base_code_id']:
+            #    base_amt += taxcode_sums.get(lineinfo['ref_base_code_id'], [None, 0.0])[1]
+            tax_amt = taxcode_sums.get(lineinfo['tax_code_id'], [None, 0.0])[1]
+            #if lineinfo['tax_code_id'] != lineinfo['ref_tax_code_id']:
+            #    tax_amt += taxcode_sums.get(lineinfo['ref_tax_code_id'], [None, 0.0])[1]
+
+            positions = [ taxcode_sums.get(lineinfo[key], [None, None])[0] for key in ('base_code_id', 'ref_base_code_id', 'tax_code_id', 'ref_tax_code_id')]
+            print "POSITIONS", positions
+            assert len(set([p for p in positions if p])) <= 1, 'Wrong configuration of %s' % (lineinfo['name'].encode('utf-8'))
+
+            if position in (3,4,5,6,7):
+                sum_all += base_amt
+            if position in (4,5,6,7):
+                sum_applied += base_amt
+
+            if position in (8,9,10):
+                sign = -1
+            else:
+                sign = 1
+
+
+            for line in line_names:
+                if line[0] == position:
+                    line[2] = base_amt
+                    line[3] = abs(tax_amt)
+                    to_pay += sign * tax_amt
+
+
+        line_names[0][2] = self.get_total_turnover(company_id, period_list)
+        line_names[1][2] = sum_applied
+        if to_pay > 0:
+            line_names[10][3] = to_pay
         else:
-            self.cr.execute ("select id from account_period where fiscalyear_id = %d" % (fiscal_year))
-            periods = self.cr.fetchall()
-            for p in periods:
-                period_list.append(p[0])
+            line_names[11][3] = abs(to_pay)
+
+        res = []
+        for line in line_names:
+            li = {'code' : line[0],
+                  'name' : line[1],
+                  'tax_base_reporting' : line[2],
+                  'tax_amount_reporting' : line[3]}
+            res.append(li)
+        return res
+
+        # Let's delete this soon.
 
 
         query = """SELECT line.tax_code_id, tc.name, tc.position_in_tax_report,
@@ -161,9 +281,7 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
             GROUP BY line.tax_code_id, tc.name, tc.position_in_tax_report""" % {'company_id' : company_id,
                                                                                 'periods' : ','.join(['%d' % x for x in period_list])}
 
-        sum_all = 0.0
-        sum_applied = 0.0
-        to_pay = 0.0
+
         print "QUERY", query
         self.cr.execute(query)
         res = self.cr.dictfetchall()
@@ -200,7 +318,7 @@ class secret_tax_report(report_sxw.rml_parse, common_report_header):
                 assert line_names[position-1][3] == 0.0
                 line_names[position-1][3] = amount_reporting
 
-        line_names[0][2] = sum_all
+        line_names[0][2] = self.get_total_turnover(company_id, period_list)
         line_names[1][2] = sum_applied
         if to_pay > 0:
             line_names[10][3] = to_pay
